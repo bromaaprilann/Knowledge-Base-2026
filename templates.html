@@ -244,7 +244,6 @@
             pointer-events: none; 
             transform: translate(-50%, -50%); 
             z-index: 10;
-            transition: all 0.3s ease; 
         }
         
         .red-box-highlight::after {
@@ -268,7 +267,7 @@
             .app-wrapper { flex-direction: column; height: 100vh; gap: 0; border-radius: 0; }
             .bento-sidebar { width: 100%; border-radius: 0; border-bottom: 1px solid var(--border-light); padding: 16px;}
             .bento-main { border-radius: 0; border: none; height: auto; flex: 1; }
-            .icon-btn.fullscreen-btn { display: none; }
+            .icon-btn.fullscreen-btn { display: none; } /* Hide expand on mobile */
         }
     </style>
 </head>
@@ -399,13 +398,6 @@
                 </div>
 
                 <div id="tab-sop-creative" class="tab-pane active">
-
-                    <div class="admin-banner">
-                        <span style="font-size: 20px;">🛠️</span>
-                        <div>
-                            <strong>Calibration Mode Active:</strong> Click anywhere on a screenshot below to instantly snap the red box to your mouse pointer. A popup will give you the updated code!
-                        </div>
-                    </div>
 
                     <div class="creative-flowchart">
                         <div class="flow-line"></div>
@@ -780,25 +772,6 @@ This final step will automatically email your customer to let them know their pa
                 document.getElementById('shippingOutput').value = `General Terms & Conditions\n\n${b} reserves the right to update the rules when necessary.`;
             }
         }
-
-        // =================================================================
-        // MAGIC CALIBRATION SCRIPT: CLICK TO MOVE THE BOX!
-        // =================================================================
-        document.querySelectorAll('.image-overlay-container').forEach(container => {
-            container.addEventListener('click', function(e) {
-                const rect = this.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width) * 100;
-                const y = ((e.clientY - rect.top) / rect.height) * 100;
-                
-                const box = this.querySelector('.red-box-highlight');
-                if(box) {
-                    box.style.top = y.toFixed(1) + '%';
-                    box.style.left = x.toFixed(1) + '%';
-                    
-                    alert(`✅ Perfect! The box has been moved to your mouse.\n\nNow open your code, find this image section, and change the red box's style code to:\n\ntop: ${y.toFixed(1)}%; left: ${x.toFixed(1)}%;`);
-                }
-            });
-        });
     </script>
 </body>
 </html>
