@@ -114,23 +114,21 @@
             box-shadow: var(--shadow-soft);
             animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            /* Ensure it doesn't overflow when hidden */
             overflow: hidden;
             flex-shrink: 0;
         }
 
-        /* Fullscreen state for Sidebar */
         .app-wrapper.fullscreen-mode .bento-sidebar {
             width: 0;
             padding: 0;
             border: none;
             opacity: 0;
             pointer-events: none;
-            margin-right: -24px; /* Eliminates the gap */
+            margin-right: -24px; 
         }
         
         .app-wrapper.fullscreen-mode {
-            max-width: 1600px; /* Let it stretch wider when focused */
+            max-width: 1600px; 
         }
 
         .brand-header { padding: 0 12px 24px; border-bottom: 1px solid var(--border-light); margin-bottom: 20px; }
@@ -179,7 +177,6 @@
         .generator-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; color: var(--text-main);}
         .generator-card p { font-size: 14px; color: var(--text-sub); margin-bottom: 25px; line-height: 1.5;}
         
-        /* Expand cards when in fullscreen */
         .app-wrapper.fullscreen-mode .generator-card, 
         .app-wrapper.fullscreen-mode .creative-flowchart, 
         .app-wrapper.fullscreen-mode .creative-step-card, 
@@ -238,7 +235,7 @@
         }
         .image-overlay-container img { width: 100%; display: block; height: auto; transition: all 0.3s ease;}
         
-        /* --- THE PULSING RED BOX --- */
+        /* --- THE PULSING RED BOX (WITH CENTERED TRANSFORM) --- */
         .red-box-highlight {
             position: absolute;
             border: 3px solid var(--doc-red);
@@ -271,7 +268,7 @@
             .app-wrapper { flex-direction: column; height: 100vh; gap: 0; border-radius: 0; }
             .bento-sidebar { width: 100%; border-radius: 0; border-bottom: 1px solid var(--border-light); padding: 16px;}
             .bento-main { border-radius: 0; border: none; height: auto; flex: 1; }
-            .icon-btn.fullscreen-btn { display: none; } /* Hide expand on mobile */
+            .icon-btn.fullscreen-btn { display: none; }
         }
     </style>
 </head>
@@ -418,7 +415,7 @@
                             <h4>Initial Order Intake</h4>
                             <p><strong>1.1</strong> Locate the automated "New Order" notification email from Warhead in your designated inbox.</p>
                             <div class="image-overlay-container">
-                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Email.png" alt="Warhead Email Notification">
+                                <img src="./IMAGES/Email.png" alt="Warhead Email Notification">
                             </div>
                         </div>
                     </div>
@@ -431,31 +428,31 @@
                             
                             <p><strong>2.1</strong> From the Warhead dashboard, click on the <span class="highlight-red">Store</span> icon in the Manage section.</p>
                             <div class="image-overlay-container">
-                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Dashboard.png" alt="Warhead Dashboard Store">
+                                <img src="./IMAGES/Dashboard.png" alt="Warhead Dashboard Store">
                                 <div class="red-box-highlight" style="top: 47.5%; left: 9.7%; width: 10%; height: 20%;"></div>
                             </div>
                             
                             <p><strong>2.2</strong> Hover your cursor over the <strong>Store</strong> tab in the top navigation menu, then select <span class="highlight-red">Orders</span> from the dropdown list.</p>
                             <div class="image-overlay-container">
-                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\STORE.png" alt="Warhead Store Dropdown">
+                                <img src="./IMAGES/STORE.png" alt="Warhead Store Dropdown">
                                 <div class="red-box-highlight" style="top: 51.5%; left: 20.5%; width: 10%; height: 8%;"></div>
                             </div>
 
                             <p><strong>2.3</strong> Locate the customer's transaction. Hover your cursor over the order row to reveal the action buttons, then click <span class="highlight-red">Modify</span>.</p>
                             <div class="image-overlay-container">
-                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Modify.png" alt="Warhead Modify Button">
+                                <img src="./IMAGES/Modify.png" alt="Warhead Modify Button">
                                 <div class="red-box-highlight" style="top: 79.4%; left: 17.4%; width: 8%; height: 8%;"></div>
                             </div>
 
                             <p><strong>2.4</strong> Scroll down to the very bottom of the order details page. Change the <strong>Status</strong> dropdown from <em>Pending</em> to <em>Processing</em>, and click <span class="highlight-red">Save</span>.</p>
                             <div class="image-overlay-container">
-                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\processing.png" alt="Warhead Status Update">
+                                <img src="./IMAGES/processing.png" alt="Warhead Status Update">
                                 <div class="red-box-highlight" style="top: 73.8%; left: 6.3%; width: 15%; height: 8%;"></div>
                             </div>
 
                             <p><strong>2.5</strong> Once you click Save, the customer will automatically receive an email updating them on their order status.</p>
                             <div class="image-overlay-container">
-                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\email update.png" alt="Automated Email Update">
+                                <img src="./IMAGES/email update.png" alt="Automated Email Update">
                                 <div class="red-box-highlight" style="top: 82.9%; left: 26.5%; width: 40%; height: 15%;"></div>
                             </div>
                         </div>
@@ -547,34 +544,34 @@
                             <h3 style="font-size: 14pt; margin-bottom: 15px; color: #000000;">Step 1: Initial Order Intake</h3>
                             <div style="margin-left: 20px; margin-bottom: 40px;">
                                 <p style="font-size: 14pt; margin-bottom: 15px; color: #111111;"><strong>1.1 Locate the automated "New Order" notification email from Warhead.</strong></p>
-                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Email.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; margin-bottom: 20px;" alt="Warhead Email Notification">
+                                <img src="./IMAGES/Email.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; margin-bottom: 20px;" alt="Warhead Email Notification">
                             </div>
 
                             <h3 style="font-size: 14pt; margin-bottom: 15px; color: #000000;">Step 2: Update Order Status to Processing</h3>
                             <div style="margin-left: 20px; margin-bottom: 40px;">
                                 <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.1 From the Warhead dashboard, click on the <span style="border: 2px solid #ff3b30; border-radius: 4px; padding: 2px 4px; color: #ff3b30;">Store</span> icon.</strong></p>
                                 <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%;">
-                                    <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Dashboard.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Dashboard Store">
+                                    <img src="./IMAGES/Dashboard.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Dashboard Store">
                                 </div>
 
                                 <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.2 Hover your cursor over the Store tab in the top menu, then click <span style="border: 2px solid #ff3b30; border-radius: 4px; padding: 2px 4px; color: #ff3b30;">Orders</span>.</strong></p>
                                 <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%;">
-                                    <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\STORE.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Store Dropdown">
+                                    <img src="./IMAGES/STORE.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Store Dropdown">
                                 </div>
 
                                 <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.3 Locate the customer's transaction. Hover your cursor over the order row to reveal the action buttons, then click <span style="border: 2px solid #ff3b30; padding: 2px 4px; color: #ff3b30;">Modify</span>.</strong></p>
                                 <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%;">
-                                    <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Modify.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Modify Order">
+                                    <img src="./IMAGES/Modify.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Modify Order">
                                 </div>
 
                                 <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.4 Scroll down to the very bottom of the page. Change the Status dropdown from <em>Pending</em> to <em>Processing</em>, and click <span style="border: 2px solid #ff3b30; padding: 2px 4px; color: #ff3b30;">Save</span>.</strong></p>
                                 <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%;">
-                                    <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\processing.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Processing Status">
+                                    <img src="./IMAGES/processing.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Processing Status">
                                 </div>
 
                                 <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.5 Once you click Save, the customer will automatically receive an email updating them on their order status.</strong></p>
                                 <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%;">
-                                    <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\email update.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Automated Email Update">
+                                    <img src="./IMAGES/email update.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Automated Email Update">
                                 </div>
                             </div>
 
@@ -682,10 +679,10 @@ This final step will automatically email your customer to let them know their pa
             wrapper.classList.toggle('fullscreen-mode');
             
             if (wrapper.classList.contains('fullscreen-mode')) {
-                btn.innerText = '✖'; // Change icon to 'close'
+                btn.innerText = '✖'; 
                 btn.style.color = 'var(--doc-red)';
             } else {
-                btn.innerText = '⛶'; // Change icon back to 'expand'
+                btn.innerText = '⛶'; 
                 btn.style.color = 'var(--text-main)';
             }
         }
