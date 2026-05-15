@@ -193,7 +193,7 @@
         .generate-btn { background: var(--vibrant-gradient); color: white; border: none; padding: 16px; width: 100%; border-radius: 14px; font-weight: 800; font-size: 15px; cursor: pointer; margin-bottom: 24px; transition: 0.2s; font-family: inherit; box-shadow: var(--vibrant-glow);}
         .generate-btn:hover { transform: translateY(-2px); filter: brightness(1.1);}
 
-        .output-box { width: 100%; height: 280px; padding: 24px; border-radius: 16px; border: 1px solid var(--input-border); font-family: 'Courier New', Courier, monospace; font-size: 14px; color: var(--text-main); background: var(--input-bg); resize: vertical; line-height: 1.7; outline: none; transition: border-color 0.3s ease;}
+        .output-box { width: 100%; height: 280px; padding: 24px; border-radius: 16px; border: 1px solid var(--input-border); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; color: var(--text-main); background: var(--input-bg); resize: vertical; line-height: 1.7; outline: none; transition: border-color 0.3s ease;}
         .output-box:focus { border-color: var(--primary); }
 
         .btn-copy-themed { position: absolute; top: 16px; right: 16px; background: var(--text-main); color: var(--surface); border: none; padding: 8px 18px; border-radius: 10px; font-weight: 800; font-size: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
@@ -760,7 +760,6 @@ This final step will automatically email your customer to let them know their pa
             document.getElementById('privacyOutput').value = `Section 1 - What Do We Do With Your Information?\n\nIf you would like to: access, correct, amend or delete any personal information we have about you, register a complaint, or simply want more information you can fill out the form on our contact us page at ${c}.`;
         }
 
-        // --- NEW UPDATED SHIPPING GENERATOR WITH BEAUTIFUL FONT ---
         function generateShipping() {
             const b = document.getElementById('shippingBizName').value || '[BUSINESS NAME]';
             const url = document.getElementById('shippingUrlInput').value || '[WEBSITE URL LINK]';
@@ -769,7 +768,7 @@ This final step will automatically email your customer to let them know their pa
             const type = document.getElementById('shippingPolicyType').value;
             
             const shortHtmlPolicy = `
-<div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: left; line-height: 1.6; color: #111111;">
+<div style="font-family: 'Plus Jakarta Sans', sans-serif; text-align: left; line-height: 1.6; color: #111111;">
     <p>At <strong>${b}</strong>, we value your trust and aim to provide a smooth, transparent shopping experience.</p>
     
     <h2>Shipping Policy</h2>
