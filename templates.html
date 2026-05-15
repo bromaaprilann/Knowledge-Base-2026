@@ -17,8 +17,6 @@
             --text-main: #1d1d1f; 
             --text-sub: #5f6368; 
             --doc-red: #ff3b30; 
-            --doc-orange: #ff9500;
-            --doc-green: #34c759;
             
             --border-light: rgba(0, 0, 0, 0.1); 
             --container-bg: rgba(255, 255, 255, 0.6);
@@ -82,7 +80,6 @@
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes scaleIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-        @keyframes pulseRed { 0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.5); } 70% { box-shadow: 0 0 0 10px rgba(255, 59, 48, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); } }
 
         /* --- ORBS --- */
         .bg-orb { position: absolute; border-radius: 50%; filter: blur(100px); z-index: -10; animation: float 12s infinite alternate ease-in-out; pointer-events: none;}
@@ -93,16 +90,17 @@
         @keyframes float { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(30px) scale(1.05); } }
 
         /* --- BENTO BOX APP WRAPPER --- */
-        .app-wrapper {
-            display: flex;
-            gap: 24px;
-            width: 100%;
-            max-width: 1400px;
-            height: 100%;
-            z-index: 1;
+        .app-wrapper { 
+            display: flex; 
+            gap: 24px; 
+            width: 100%; 
+            max-width: 1400px; 
+            height: 100%; 
+            z-index: 1; 
+            transition: max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* --- FLOATING BENTO SIDEBAR --- */
+        /* --- SIDEBAR --- */
         .bento-sidebar {
             width: 290px;
             background: var(--container-bg);
@@ -115,216 +113,82 @@
             padding: 24px 16px;
             box-shadow: var(--shadow-soft);
             animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .brand-header {
-            padding: 0 12px 24px;
-            border-bottom: 1px solid var(--border-light);
-            margin-bottom: 20px;
-        }
-
-        .brand-header h2 {
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* --- CREATIVE NESTED FOLDERS (DROPDOWNS) --- */
-        .dropdown-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 14px 16px;
-            background: transparent;
-            border: 1px solid transparent;
-            color: var(--text-main);
-            font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            border-radius: 16px; /* Pill-like */
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .dropdown-toggle:hover {
-            background: var(--hover-bg);
-        }
-
-        .dropdown-toggle.active {
-            background: rgba(255,255,255,0.05);
-            border-color: var(--border-light);
-            box-shadow: var(--shadow-soft);
-        }
-
-        .chevron {
-            font-size: 10px;
-            opacity: 0.6;
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .dropdown-toggle.active .chevron {
-            transform: rotate(180deg);
-        }
-
-        /* The "Glass Folder" Container */
-        .dropdown-menu {
-            display: none; 
-            flex-direction: column;
-            background: var(--folder-bg);
-            border-radius: 16px;
-            padding: 8px;
-            margin-top: 8px;
-            margin-bottom: 16px;
-            border: 1px solid var(--border-light);
-            /* This left border acts as the 'active' line for the folder */
-            border-left: 3px solid transparent; 
-            animation: fadeIn 0.3s ease;
-            transition: border-left-color 0.3s ease;
-        }
-
-        .dropdown-menu.show {
-            display: flex; 
-        }
-
-        /* Nav Buttons inside folders */
-        .nav-btn {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 100%;
-            padding: 12px 14px;
-            margin-bottom: 4px;
-            background: transparent;
-            border: none;
-            border-radius: 10px;
-            color: var(--text-sub);
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            text-align: left;
-        }
-
-        .nav-btn:hover { 
-            background: var(--hover-bg); 
-            color: var(--text-main); 
-            transform: translateX(4px); /* Slight hover nudge */
-        }
-        
-        .nav-btn.active { 
-            background: var(--vibrant-gradient); 
-            color: #ffffff; 
-            box-shadow: var(--vibrant-glow);
-            transform: scale(1.02);
-        }
-
-        /* --- PROFESSIONAL SIDEBAR EXIT --- */
-        .exit-footer-btn {
-            margin-top: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px;
-            background: rgba(0, 0, 0, 0.05); 
-            border-radius: 16px;
-            border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
-            color: var(--text-main);
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            width: 100%;
-            font-family: inherit;
-        }
-
-        body.dark-mode .exit-footer-btn { background: rgba(0, 0, 0, 0.2); }
-        
-        .exit-footer-btn:hover {
-            background: rgba(255, 59, 48, 0.1);
-            color: var(--doc-red);
-            border-color: rgba(255, 59, 48, 0.3);
-            transform: translateY(-2px);
-        }
-
-        /* --- FLOATING MAIN CONTENT --- */
-        .bento-main {
-            flex: 1;
-            background: var(--container-bg);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--border-light);
-            border-radius: 28px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: var(--shadow-soft);
-            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            /* Ensure it doesn't overflow when hidden */
             overflow: hidden;
+            flex-shrink: 0;
         }
 
-        .top-header {
-            height: 76px;
-            padding: 0 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border-light);
-            background: rgba(255, 255, 255, 0.1);
+        /* Fullscreen state for Sidebar */
+        .app-wrapper.fullscreen-mode .bento-sidebar {
+            width: 0;
+            padding: 0;
+            border: none;
+            opacity: 0;
+            pointer-events: none;
+            margin-right: -24px; /* Eliminates the gap */
+        }
+        
+        .app-wrapper.fullscreen-mode {
+            max-width: 1600px; /* Let it stretch wider when focused */
         }
 
-        .top-header h2 {
-            font-size: 22px;
-            font-weight: 800;
-            background: var(--vibrant-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .brand-header { padding: 0 12px 24px; border-bottom: 1px solid var(--border-light); margin-bottom: 20px; }
+        .brand-header h2 { font-size: 20px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 10px; white-space: nowrap; }
 
-        .theme-toggle { 
-            background: var(--card-bg); 
-            border: 1px solid var(--border-light); 
-            font-size: 18px; 
-            cursor: pointer; 
-            padding: 8px 12px; 
-            border-radius: 12px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            transition: all 0.3s ease; 
-            color: var(--text-main); 
+        .dropdown-toggle {
+            display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 14px 16px; background: transparent; border: 1px solid transparent; color: var(--text-main); font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border-radius: 16px; transition: all 0.3s ease; font-family: inherit; white-space: nowrap;
         }
-        .theme-toggle:hover { transform: translateY(-2px); border-color: var(--primary);}
+        .dropdown-toggle:hover { background: var(--hover-bg); }
+        .dropdown-toggle.active { background: rgba(255,255,255,0.05); border-color: var(--border-light); box-shadow: var(--shadow-soft); }
+        .chevron { font-size: 10px; opacity: 0.6; transition: transform 0.3s ease; }
+        .dropdown-toggle.active .chevron { transform: rotate(180deg); }
 
-        .scroll-area {
-            flex: 1;
-            overflow-y: auto;
-            padding: 40px;
-            scroll-behavior: smooth;
-        }
+        .dropdown-menu { display: none; flex-direction: column; background: var(--folder-bg); border-radius: 16px; padding: 8px; margin-top: 8px; margin-bottom: 16px; border: 1px solid var(--border-light); border-left: 3px solid transparent; animation: fadeIn 0.3s ease; transition: border-left-color 0.3s ease; }
+        .dropdown-menu.show { display: flex; }
 
+        .nav-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; margin-bottom: 4px; background: transparent; border: none; border-radius: 10px; color: var(--text-sub); font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-align: left; white-space: nowrap;}
+        .nav-btn:hover { background: var(--hover-bg); color: var(--text-main); transform: translateX(4px); }
+        .nav-btn.active { background: var(--vibrant-gradient); color: #ffffff; box-shadow: var(--vibrant-glow); transform: scale(1.02); }
+
+        .exit-footer-btn { margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 14px; background: rgba(0, 0, 0, 0.05); border-radius: 16px; border: 1px solid var(--border-light); transition: all 0.3s ease; color: var(--text-main); font-weight: 700; font-size: 14px; cursor: pointer; width: 100%; font-family: inherit; white-space: nowrap; }
+        body.dark-mode .exit-footer-btn { background: rgba(0, 0, 0, 0.2); }
+        .exit-footer-btn:hover { background: rgba(255, 59, 48, 0.1); color: var(--doc-red); border-color: rgba(255, 59, 48, 0.3); transform: translateY(-2px); }
+
+        /* --- MAIN CONTENT --- */
+        .bento-main { flex: 1; background: var(--container-bg); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border: 1px solid var(--border-light); border-radius: 28px; display: flex; flex-direction: column; box-shadow: var(--shadow-soft); animation: fadeIn 0.6s ease; overflow: hidden; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);}
+        
+        .top-header { height: 76px; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-light); background: rgba(255, 255, 255, 0.1); }
+        .top-header h2 { font-size: 22px; font-weight: 800; background: var(--vibrant-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .header-actions { display: flex; gap: 12px; align-items: center; }
+
+        .icon-btn { background: var(--card-bg); border: 1px solid var(--border-light); font-size: 16px; cursor: pointer; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; color: var(--text-main); }
+        .icon-btn:hover { transform: translateY(-2px); border-color: var(--primary); color: var(--primary);}
+
+        .scroll-area { flex: 1; overflow-y: auto; padding: 40px; scroll-behavior: smooth; }
         .scroll-area::-webkit-scrollbar { width: 6px; }
         .scroll-area::-webkit-scrollbar-track { background: transparent; margin: 20px 0;}
         .scroll-area::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
 
-        .tab-pane { display: none; animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .tab-pane { display: none; animation: scaleIn 0.4s ease; }
         .tab-pane.active { display: block; }
 
-        /* --- WIDGET & CARD STYLING --- */
-        .generator-card { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 24px; padding: 40px; box-shadow: var(--shadow-float); max-width: 950px; margin: 0 auto;}
+        /* --- CARDS & GENERATORS --- */
+        .generator-card { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 24px; padding: 40px; box-shadow: var(--shadow-float); max-width: 950px; margin: 0 auto; transition: max-width 0.4s ease;}
         .generator-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; color: var(--text-main);}
         .generator-card p { font-size: 14px; color: var(--text-sub); margin-bottom: 25px; line-height: 1.5;}
         
+        /* Expand cards when in fullscreen */
+        .app-wrapper.fullscreen-mode .generator-card, 
+        .app-wrapper.fullscreen-mode .creative-flowchart, 
+        .app-wrapper.fullscreen-mode .creative-step-card, 
+        .app-wrapper.fullscreen-mode #copyable-sop-area {
+            max-width: 1200px;
+        }
+
         .input-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
         .input-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
-        
         .input-field-gen { padding: 14px 18px; font-size: 14px; background: var(--input-bg); color: var(--text-main); border: 1px solid var(--input-border); border-radius: 12px; width: 100%; outline: none; transition: all 0.3s ease; font-family: inherit;}
         .input-field-gen:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.15);}
         .input-field-gen::placeholder { color: var(--text-sub); opacity: 0.8;}
@@ -339,17 +203,13 @@
         .btn-copy-themed:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
         body.dark-mode .btn-copy-themed { background: var(--primary); color: #fff; }
 
-        /* =========================================
-           CREATIVE ORDER PROCESSING UI
-           ========================================= */
-
-        .creative-flowchart { display: flex; align-items: flex-start; justify-content: space-between; position: relative; margin-bottom: 50px; background: var(--glass-card); padding: 30px 40px; border-radius: 24px; border: 1px solid var(--border-light); box-shadow: var(--shadow-float); }
+        /* --- CREATIVE SOP --- */
+        .creative-flowchart { display: flex; align-items: flex-start; justify-content: space-between; position: relative; margin-bottom: 50px; background: var(--glass-card); padding: 30px 40px; border-radius: 24px; border: 1px solid var(--border-light); box-shadow: var(--shadow-float); max-width: 950px; margin-left: auto; margin-right: auto; transition: max-width 0.4s ease;}
         .flow-line { position: absolute; top: 58px; left: 10%; right: 10%; height: 4px; background: var(--vibrant-gradient); border-radius: 4px; z-index: 1; opacity: 0.3; }
         .flow-node { position: relative; z-index: 2; text-align: center; width: 22%; display: flex; flex-direction: column; align-items: center;}
-        .flow-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 16px; background: var(--surface); border: 2px solid transparent; box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);}
+        .flow-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 16px; background: var(--surface); border: 2px solid transparent; box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: transform 0.3s ease;}
         .flow-node:hover .flow-icon { transform: scale(1.1) translateY(-5px); border-color: var(--primary); }
         
-        /* Vibrant Icons for Flowchart */
         .flow-node:nth-child(2) .flow-icon { background: linear-gradient(135deg, #e0f2fe, #bfdbfe); border-color: #60a5fa;}
         .flow-node:nth-child(3) .flow-icon { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); border-color: #c084fc;}
         .flow-node:nth-child(4) .flow-icon { background: linear-gradient(135deg, #fef3c7, #fde68a); border-color: #fbbf24;}
@@ -362,7 +222,7 @@
         .flow-title { font-weight: 800; font-size: 14px; color: var(--text-main); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
         .flow-desc { font-size: 12px; color: var(--text-sub); line-height: 1.4;}
 
-        .creative-step-card { display: flex; gap: 30px; background: var(--glass-card); border: 1px solid var(--border-light); border-radius: 24px; padding: 35px; margin-bottom: 30px; box-shadow: var(--shadow-soft); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden;}
+        .creative-step-card { display: flex; gap: 30px; background: var(--glass-card); border: 1px solid var(--border-light); border-radius: 24px; padding: 35px; margin-bottom: 30px; box-shadow: var(--shadow-soft); transition: all 0.4s ease; position: relative; overflow: hidden; max-width: 950px; margin-left: auto; margin-right: auto;}
         .creative-step-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-float); border-color: var(--primary);}
 
         .step-number { font-size: 48px; font-weight: 800; background: var(--vibrant-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; opacity: 0.15; position: absolute; top: -10px; right: 20px; pointer-events: none;}
@@ -373,43 +233,45 @@
         .step-content p { font-size: 15px; color: var(--text-sub); margin-bottom: 20px; line-height: 1.6;}
         .step-content strong { color: var(--text-main); font-weight: 700;}
         
-        /* THEME ALIGNED SCREENSHOT BORDER (BLUE) */
         .image-overlay-container { 
-            position: relative; 
-            display: inline-block; 
-            border-radius: 8px; 
-            overflow: hidden; 
-            border: 2px solid var(--primary); /* The Theme Blue! */
-            box-shadow: 0 4px 15px rgba(26, 115, 232, 0.15); 
-            margin-bottom: 20px; 
-            background: #fff; 
-            width: 100%; 
-            max-width: 900px;
+            position: relative; display: block; line-height: 0; border-radius: 8px; overflow: hidden; border: 2px solid var(--primary); box-shadow: 0 4px 15px rgba(26, 115, 232, 0.15); margin-bottom: 20px; background: #fff; width: 100%; transition: all 0.3s ease;
         }
-        .image-overlay-container img { width: 100%; display: block; height: auto;}
+        .image-overlay-container img { width: 100%; display: block; height: auto; transition: all 0.3s ease;}
         
-        /* The Red Box Overlay */
+        /* --- THE PULSING RED BOX --- */
         .red-box-highlight {
             position: absolute;
-            border: 2px solid var(--doc-red);
-            border-radius: 6px;
-            box-shadow: 0 0 10px rgba(255, 59, 48, 0.4);
-            animation: pulseRed 2s infinite;
+            border: 3px solid var(--doc-red);
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(255, 59, 48, 0.5), inset 0 0 10px rgba(255, 59, 48, 0.2);
             pointer-events: none; 
+            transform: translate(-50%, -50%); 
+            z-index: 10;
+            transition: all 0.3s ease; 
         }
         
-        .highlight-red { color: var(--doc-red); font-weight: 800; background: rgba(255, 59, 48, 0.1); padding: 2px 8px; border-radius: 6px; border: 1px dashed var(--doc-red);}
+        .red-box-highlight::after {
+            content: '';
+            position: absolute;
+            top: -3px; left: -3px; right: -3px; bottom: -3px;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 59, 48, 0.5);
+            animation: pulseRedBox 2s infinite;
+        }
 
-        .step-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--input-border); font-size: 13px; text-align: left; margin-bottom: 20px; background: var(--surface);}
-        .step-table th { background: var(--input-bg); padding: 12px 15px; font-weight: 700; color: var(--text-main); border-bottom: 1px solid var(--input-border);}
-        .step-table td { padding: 12px 15px; border-bottom: 1px solid var(--input-border); color: var(--text-sub);}
-        .step-table tr:last-child td { border-bottom: none;}
+        @keyframes pulseRedBox {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.1); opacity: 0; }
+        }
+
+        .highlight-red { color: var(--doc-red); font-weight: 800; background: rgba(255, 59, 48, 0.1); padding: 2px 8px; border-radius: 6px; border: 1px dashed var(--doc-red);}
 
         @media (max-width: 900px) {
             body { padding: 0; }
             .app-wrapper { flex-direction: column; height: 100vh; gap: 0; border-radius: 0; }
             .bento-sidebar { width: 100%; border-radius: 0; border-bottom: 1px solid var(--border-light); padding: 16px;}
             .bento-main { border-radius: 0; border: none; height: auto; flex: 1; }
+            .icon-btn.fullscreen-btn { display: none; } /* Hide expand on mobile */
         }
     </style>
 </head>
@@ -419,8 +281,7 @@
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
 
-    <div class="app-wrapper">
-        
+    <div class="app-wrapper" id="appWrapper">
         <aside class="bento-sidebar">
             <div class="brand-header">
                 <h2><span style="font-size: 24px; color: var(--primary);">❖</span> Workspace</h2>
@@ -431,7 +292,6 @@
                     <div style="display: flex; align-items: center; gap: 8px;">📂 Extra Pages</div>
                     <span class="chevron">▼</span>
                 </button>
-                
                 <div id="extra-pages-menu" class="dropdown-menu">
                     <button class="nav-btn theme-purple" onclick="openTab('tab-about', this, 'About Us Generator', 'extra-pages-menu')">📝 About Us</button>
                     <button class="nav-btn theme-purple" onclick="openTab('tab-terms', this, 'Terms & Conditions', 'extra-pages-menu')">⚖️ Terms & Conditions</button>
@@ -443,7 +303,6 @@
                     <div style="display: flex; align-items: center; gap: 8px;">📦 Processing Doba</div>
                     <span class="chevron">▼</span>
                 </button>
-
                 <div id="doba-menu" class="dropdown-menu show" style="border-left-color: var(--theme-blue);">
                     <button class="nav-btn theme-blue active" onclick="openTab('tab-sop-creative', this, 'Processing Doba: Creative Visual SOP', 'doba-menu')">✨ Creative Visual SOP</button>
                     <button class="nav-btn theme-blue" onclick="openTab('tab-sop-word', this, 'Processing Doba: Word Document SOP', 'doba-menu')">📄 Word Document SOP</button>
@@ -457,10 +316,15 @@
         </aside>
 
         <main class="bento-main">
-            
             <header class="top-header">
                 <h2 id="page-title">Processing Doba: Creative Visual SOP</h2>
-                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Day/Night Mode" id="themeBtn">☀️</button>
+                
+                <div class="header-actions">
+                    <button class="icon-btn fullscreen-btn" onclick="toggleFullscreen()" title="Toggle Fullscreen Width" id="expandBtn">
+                        ⛶
+                    </button>
+                    <button class="icon-btn theme-toggle" onclick="toggleTheme()" title="Toggle Day/Night Mode" id="themeBtn">☀️</button>
+                </div>
             </header>
 
             <div class="scroll-area">
@@ -538,33 +402,13 @@
                 </div>
 
                 <div id="tab-sop-creative" class="tab-pane active">
-                    
+
                     <div class="creative-flowchart">
                         <div class="flow-line"></div>
-                        
-                        <div class="flow-node">
-                            <div class="flow-icon">💻</div>
-                            <div class="flow-title">1. Client Order</div>
-                            <div class="flow-desc">Purchased on Warhead</div>
-                        </div>
-                        
-                        <div class="flow-node">
-                            <div class="flow-icon">⚙️</div>
-                            <div class="flow-title">2. Processing</div>
-                            <div class="flow-desc">Secure item on Doba</div>
-                        </div>
-
-                        <div class="flow-node">
-                            <div class="flow-icon">📦</div>
-                            <div class="flow-title">3. Logistics</div>
-                            <div class="flow-desc">Supplier dispatches</div>
-                        </div>
-
-                        <div class="flow-node">
-                            <div class="flow-icon">🤝</div>
-                            <div class="flow-title">4. Fulfillment</div>
-                            <div class="flow-desc">Client is notified</div>
-                        </div>
+                        <div class="flow-node"><div class="flow-icon">💻</div><div class="flow-title">1. Client Order</div><div class="flow-desc">Purchased on Warhead</div></div>
+                        <div class="flow-node"><div class="flow-icon">⚙️</div><div class="flow-title">2. Processing</div><div class="flow-desc">Secure item on Doba</div></div>
+                        <div class="flow-node"><div class="flow-icon">📦</div><div class="flow-title">3. Logistics</div><div class="flow-desc">Supplier dispatches</div></div>
+                        <div class="flow-node"><div class="flow-icon">🤝</div><div class="flow-title">4. Fulfillment</div><div class="flow-desc">Client is notified</div></div>
                     </div>
 
                     <div class="creative-step-card">
@@ -584,35 +428,35 @@
                         <div class="step-badge">2</div>
                         <div class="step-content">
                             <h4>Update Order Status to Processing</h4>
-                            <p><strong>2.1</strong> From the Warhead dashboard, click on the <span class="highlight-red">Store</span> icon in the Manage section.</p>
                             
+                            <p><strong>2.1</strong> From the Warhead dashboard, click on the <span class="highlight-red">Store</span> icon in the Manage section.</p>
                             <div class="image-overlay-container">
                                 <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Dashboard.png" alt="Warhead Dashboard Store">
-                                <div class="red-box-highlight" style="top: 34%; left: 5.5%; width: 10.5%; height: 24%;"></div>
+                                <div class="red-box-highlight" style="top: 47.5%; left: 9.7%; width: 10%; height: 20%;"></div>
                             </div>
                             
                             <p><strong>2.2</strong> Hover your cursor over the <strong>Store</strong> tab in the top navigation menu, then select <span class="highlight-red">Orders</span> from the dropdown list.</p>
                             <div class="image-overlay-container">
                                 <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\STORE.png" alt="Warhead Store Dropdown">
-                                <div class="red-box-highlight" style="top: 16.5%; left: 9.5%; width: 7%; height: 5%;"></div>
+                                <div class="red-box-highlight" style="top: 51.5%; left: 20.5%; width: 10%; height: 8%;"></div>
                             </div>
 
                             <p><strong>2.3</strong> Locate the customer's transaction. Hover your cursor over the order row to reveal the action buttons, then click <span class="highlight-red">Modify</span>.</p>
                             <div class="image-overlay-container">
                                 <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Modify.png" alt="Warhead Modify Button">
-                                <div class="red-box-highlight" style="top: 31%; left: 9.5%; width: 5%; height: 4%;"></div>
+                                <div class="red-box-highlight" style="top: 79.4%; left: 17.4%; width: 8%; height: 8%;"></div>
                             </div>
 
                             <p><strong>2.4</strong> Scroll down to the very bottom of the order details page. Change the <strong>Status</strong> dropdown from <em>Pending</em> to <em>Processing</em>, and click <span class="highlight-red">Save</span>.</p>
                             <div class="image-overlay-container">
                                 <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\processing.png" alt="Warhead Status Update">
-                                <div class="red-box-highlight" style="top: 79%; left: 1.2%; width: 7%; height: 6%;"></div>
+                                <div class="red-box-highlight" style="top: 73.8%; left: 6.3%; width: 15%; height: 8%;"></div>
                             </div>
 
                             <p><strong>2.5</strong> Once you click Save, the customer will automatically receive an email updating them on their order status.</p>
                             <div class="image-overlay-container">
-                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\image_08f2bb.png" alt="Automated Email Update">
-                                <div class="red-box-highlight" style="top: 80%; left: 15%; width: 30%; height: 15%;"></div>
+                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\email update.png" alt="Automated Email Update">
+                                <div class="red-box-highlight" style="top: 82.9%; left: 26.5%; width: 40%; height: 15%;"></div>
                             </div>
                         </div>
                     </div>
@@ -667,7 +511,7 @@
                             <button onclick="copyRichText('copyable-sop-area', this)" style="background: #1a73e8; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer;">Copy Full Guide</button>
                         </div>
 
-                        <div id="copyable-sop-area" style="padding: 40px; background: #ffffff; color: #000000; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 900px; margin: 0 auto; line-height: 1.5; text-align: left;">
+                        <div id="copyable-sop-area" style="padding: 40px; background: #ffffff; color: #000000; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0 auto; line-height: 1.5; text-align: left;">
                             
                             <table style="width: 100%; text-align: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; border-collapse: collapse; margin-bottom: 50px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
                                 <tr><td colspan="7" style="background: #0f172a; padding: 18px 25px; font-weight: 800; font-size: 13pt; color: #ffffff; text-align: left; text-transform: uppercase; letter-spacing: 1px;"><span style="color: #60a5fa; margin-right: 8px;">◈</span> Dropshipping Lifecycle</td></tr>
@@ -709,33 +553,28 @@
                             <h3 style="font-size: 14pt; margin-bottom: 15px; color: #000000;">Step 2: Update Order Status to Processing</h3>
                             <div style="margin-left: 20px; margin-bottom: 40px;">
                                 <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.1 From the Warhead dashboard, click on the <span style="border: 2px solid #ff3b30; border-radius: 4px; padding: 2px 4px; color: #ff3b30;">Store</span> icon.</strong></p>
-                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%; max-width: 900px;">
+                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%;">
                                     <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Dashboard.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Dashboard Store">
-                                    <div style="position: absolute; top: 34%; left: 5.5%; width: 10.5%; height: 24%; border: 2px solid #ff3b30; border-radius: 6px;"></div>
                                 </div>
 
                                 <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.2 Hover your cursor over the Store tab in the top menu, then click <span style="border: 2px solid #ff3b30; border-radius: 4px; padding: 2px 4px; color: #ff3b30;">Orders</span>.</strong></p>
-                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%; max-width: 900px;">
+                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%;">
                                     <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\STORE.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Store Dropdown">
-                                    <div style="position: absolute; top: 16.5%; left: 9.5%; width: 7%; height: 5%; border: 2px solid #ff3b30; border-radius: 4px;"></div>
                                 </div>
 
                                 <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.3 Locate the customer's transaction. Hover your cursor over the order row to reveal the action buttons, then click <span style="border: 2px solid #ff3b30; padding: 2px 4px; color: #ff3b30;">Modify</span>.</strong></p>
-                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%; max-width: 900px;">
+                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%;">
                                     <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Modify.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Modify Order">
-                                    <div style="position: absolute; top: 31%; left: 9.5%; width: 5%; height: 4%; border: 2px solid #ff3b30; border-radius: 4px;"></div>
                                 </div>
 
                                 <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.4 Scroll down to the very bottom of the page. Change the Status dropdown from <em>Pending</em> to <em>Processing</em>, and click <span style="border: 2px solid #ff3b30; padding: 2px 4px; color: #ff3b30;">Save</span>.</strong></p>
-                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%; max-width: 900px;">
+                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%;">
                                     <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\processing.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Processing Status">
-                                    <div style="position: absolute; top: 79%; left: 1.2%; width: 7%; height: 6%; border: 2px solid #ff3b30; border-radius: 4px;"></div>
                                 </div>
 
                                 <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.5 Once you click Save, the customer will automatically receive an email updating them on their order status.</strong></p>
-                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%; max-width: 900px;">
-                                    <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\image_08f2bb.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Automated Email Update">
-                                    <div style="position: absolute; top: 80%; left: 15%; width: 30%; height: 15%; border: 2px solid #ff3b30; border-radius: 4px;"></div>
+                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%;">
+                                    <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\email update.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Automated Email Update">
                                 </div>
                             </div>
 
@@ -812,7 +651,6 @@ This final step will automatically email your customer to let them know their pa
     </div>
 
     <script>
-        // Check Theme on Load: defaults to dark-mode.
         window.onload = function() {
             if (localStorage.getItem('kb_dark_mode') === 'false') {
                 document.body.classList.remove('dark-mode');
@@ -823,7 +661,6 @@ This final step will automatically email your customer to let them know their pa
             }
         };
 
-        // Dark Mode Toggle Logic
         function toggleTheme() {
             const body = document.body;
             const btn = document.getElementById('themeBtn');
@@ -838,37 +675,42 @@ This final step will automatically email your customer to let them know their pa
             }
         }
 
-        // Dropdown Toggle Logic
+        // FULLSCREEN EXPAND FUNCTION LOGIC
+        function toggleFullscreen() {
+            const wrapper = document.getElementById('appWrapper');
+            const btn = document.getElementById('expandBtn');
+            wrapper.classList.toggle('fullscreen-mode');
+            
+            if (wrapper.classList.contains('fullscreen-mode')) {
+                btn.innerText = '✖'; // Change icon to 'close'
+                btn.style.color = 'var(--doc-red)';
+            } else {
+                btn.innerText = '⛶'; // Change icon back to 'expand'
+                btn.style.color = 'var(--text-main)';
+            }
+        }
+
         function toggleDropdown(menuId, btnElement) {
             const menu = document.getElementById(menuId);
             menu.classList.toggle('show');
             btnElement.classList.toggle('active');
         }
 
-        // Core Tab Switcher & Dynamic Title Update
         function openTab(tabId, btnElement, titleText, parentMenuId) {
-            // Hide all tabs
             document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active'));
-            // Remove active state from all nested nav buttons
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             
-            // Show selected tab
             document.getElementById(tabId).classList.add('active');
-            // Highlight selected button
             btnElement.classList.add('active');
             
-            // Update the top header title
             document.getElementById('page-title').innerText = titleText;
 
-            // Reset all folder accent colors
             document.querySelectorAll('.dropdown-menu').forEach(menu => {
                 menu.style.borderLeftColor = 'transparent';
             });
 
-            // Set the active glowing border on the parent folder
             const parentMenu = document.getElementById(parentMenuId);
             if (parentMenu) {
-                // Determine color based on active button
                 let accentColor = 'var(--primary)';
                 if(btnElement.classList.contains('theme-purple')) accentColor = 'var(--theme-purple)';
                 if(btnElement.classList.contains('theme-teal')) accentColor = 'var(--theme-teal)';
@@ -878,7 +720,6 @@ This final step will automatically email your customer to let them know their pa
             }
         }
 
-        // Copy Plain Text
         function copyTemplate(buttonElement, textToCopy) {
             navigator.clipboard.writeText(textToCopy).then(() => {
                 const originalText = buttonElement.innerText;
@@ -887,7 +728,6 @@ This final step will automatically email your customer to let them know their pa
             });
         }
 
-        // Copy Rich-Text HTML (for Word)
         function copyRichText(elementId, btnElement) {
             const el = document.getElementById(elementId);
             const selection = window.getSelection();
@@ -908,7 +748,6 @@ This final step will automatically email your customer to let them know their pa
             selection.removeAllRanges(); 
         }
 
-        // --- Generator Functions ---
         function generateAboutUs() {
             const b = document.getElementById('aboutBizName').value || '[COMPANY NAME]';
             const c = document.getElementById('aboutCategory').value || '[PRODUCT CATEGORY]';
