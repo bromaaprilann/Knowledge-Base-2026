@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Internal Training Portal | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- CORE VARIABLES --- */
+        :root { 
+            --primary: #1a73e8; 
+            --accent-purple: #8a2be2; 
+            --surface: #ffffff;
+            --text-main: #1d1d1f; 
+            --text-sub: #5f6368;
+            --doc-red: #ff3b30; 
+            --doc-green: #34c759; 
+            --border-light: #e5e5ea;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(255, 255, 255, 0.8);
+            --panel-bg: #fafafc;
+            --shadow-color: rgba(0,0,0,0.03);
+            --shadow-hover: rgba(0,0,0,0.08);
+            --spotlight-glow: rgba(255, 255, 255, 0.8);
+        }
+
+        /* --- DARK MODE VARIABLES --- */
+        body.dark-mode {
+            --primary: #60a5fa; 
+            --accent-purple: #c084fc; 
+            --text-main: #f8fafc; 
+            --text-sub: #94a3b8; 
+            --surface: #1e293b; 
+            --border-light: #334155; 
+            --card-bg: rgba(30, 41, 59, 0.6); 
+            --card-border: rgba(255, 255, 255, 0.08); 
+            --panel-bg: #0f172a;
+            --shadow-color: rgba(0,0,0,0.2);
+            --shadow-hover: rgba(0,0,0,0.4);
+            --spotlight-glow: rgba(255, 255, 255, 0.06);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        /* --- STRICT SCREEN FIT & BREATHING BACKGROUND --- */
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            
+            /* Animated Light Gradient */
+            background: linear-gradient(-45deg, #e3edf7, #f4eaff, #e0f2fe, #f3e8ff);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+
+            height: 100vh; 
+            width: 100vw;  
+            color: var(--text-main); 
+            overflow: hidden; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            position: relative;
+            transition: color 0.5s ease;
+        }
+
+        body.dark-mode {
+            /* Animated Dark Gradient */
+            background: linear-gradient(-45deg, #020617, #0f172a, #1e1b4b, #170f36);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- THE CREATIVE ORBS --- */
+        .bg-orb { position: absolute; border-radius: 50%; filter: blur(100px); z-index: -10; animation: float 12s infinite alternate ease-in-out; pointer-events: none;}
+        .orb-1 { width: 50vw; height: 50vw; background: rgba(26, 115, 232, 0.15); top: -10%; left: -10%; }
+        .orb-2 { width: 45vw; height: 45vw; background: rgba(138, 43, 226, 0.1); bottom: -10%; right: -5%; animation-delay: -6s; }
+        
+        body.dark-mode .orb-1 { background: rgba(59, 130, 246, 0.08); }
+        body.dark-mode .orb-2 { background: rgba(168, 85, 247, 0.08); }
+        
+        @keyframes float { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(30px) scale(1.05); } }
+
+        /* --- NAV POSITIONED TO ALWAYS STAY TOP RIGHT --- */
+        .top-nav { position: fixed; top: 30px; right: 40px; display: flex; align-items: center; gap: 15px; z-index: 100;}
+        
+        .theme-toggle { background: transparent; border: none; font-size: 20px; cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; color: var(--text-sub); }
+        .theme-toggle:hover { background: rgba(128, 128, 128, 0.1); color: var(--text-main); }
+        
+        .status-badge { font-size: 14px; font-weight: 700; color: var(--text-sub); display: flex; align-items: center; gap: 8px;}
+        .status-badge::before { content: ''; display: block; width: 10px; height: 10px; background: var(--doc-green); border-radius: 50%; }
+        .signout-btn { background: transparent; border: 2px solid rgba(255, 59, 48, 0.3); padding: 8px 20px; border-radius: 20px; font-weight: 800; font-size: 13px; color: var(--doc-red); cursor: pointer; transition: 0.2s; font-family: inherit;}
+        .signout-btn:hover { background: var(--doc-red); color: white; border-color: var(--doc-red); }
+
+        /* --- CENTRAL DASHBOARD WRAPPER --- */
+        #dashboard-section { 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            width: 100%; 
+            max-width: 950px; 
+            padding: 20px; 
+            z-index: 10; 
+        }
+
+        /* --- HEADER & DYNAMIC GREETING --- */
+        .dash-header { margin-bottom: 40px; text-align: center; width: 100%; display: block; animation: fadeIn 0.4s ease;}
+        .dash-header h1 { font-size: 44px; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; color: var(--text-main); transition: color 0.5s ease;}
+        .dash-header p { font-size: 16px; color: var(--text-sub); font-weight: 500; transition: color 0.5s ease; margin-bottom: 5px;}
+        
+        /* Live Clock Widget */
+        .clock-widget { font-size: 14px; font-weight: 600; color: var(--text-sub); letter-spacing: 0.5px; opacity: 0.8; transition: color 0.5s ease;}
+
+        .gradient-text { background: linear-gradient(135deg, var(--primary), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; }
+
+        /* --- BENTO GRID & STAGGERED ANIMATIONS --- */
+        .bento-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 25px; 
+            width: 100%; 
+        }
+        
+        .card { 
+            background: var(--card-bg); 
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border); 
+            border-radius: 24px; 
+            padding: 30px; 
+            display: flex; 
+            align-items: center; 
+            gap: 20px; 
+            transition: transform 0.3s, box-shadow 0.3s, background 0.5s, border-color 0.5s; 
+            cursor: pointer; 
+            box-shadow: 0 10px 30px var(--shadow-color); 
+            text-decoration: none;
+            
+            /* Required for Spotlight */
+            position: relative;
+            overflow: hidden;
+
+            /* Staggered Animation Setup */
+            opacity: 0;
+            animation: fadeInSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* --- THE SPOTLIGHT MOUSE EFFECT --- */
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: inherit;
+            /* Creates the glowing circle that tracks the mouse */
+            background: radial-gradient(
+                600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                var(--spotlight-glow), 
+                transparent 40%
+            );
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+        
+        .card:hover::before { opacity: 1; }
+        
+        /* Keeps the text and icons above the spotlight glow */
+        .card-content-wrapper { display: flex; align-items: center; gap: 20px; z-index: 1; position: relative; width: 100%; }
+
+        @keyframes fadeInSlideUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        /* The Cascade Timing */
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+
+        .card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px var(--shadow-hover); border-color: var(--primary); }
+        .card h3 { font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 6px; transition: color 0.5s ease;}
+        .card p { font-size: 14px; color: var(--text-sub); font-weight: 500; line-height: 1.5; margin: 0; transition: color 0.5s ease;}
+        
+        .icon-wrapper { display: flex; align-items: center; justify-content: center; border-radius: 18px; width: 64px; height: 64px; flex-shrink: 0; transition: transform 0.3s, background 0.5s, color 0.5s; border: 1px solid transparent;}
+        .card:hover .icon-wrapper { transform: scale(1.05); }
+        .icon-wrapper svg { width: 28px; height: 28px; }
+
+        /* Dynamic Icon Colors */
+        .icon-orange { background: #fff4e6; color: #ff9500; }
+        body.dark-mode .icon-orange { background: rgba(249, 115, 22, 0.15); color: #fdba74; border-color: rgba(249, 115, 22, 0.3); }
+        
+        .icon-purple { background: #f3e8fd; color: #8a2be2; }
+        body.dark-mode .icon-purple { background: rgba(168, 85, 247, 0.15); color: #d8b4fe; border-color: rgba(168, 85, 247, 0.3); }
+        
+        .icon-green { background: #e6f4ea; color: #34c759; }
+        body.dark-mode .icon-green { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.3); }
+        
+        .icon-blue { background: #e8f0fe; color: #1a73e8; }
+        body.dark-mode .icon-blue { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border-color: rgba(59, 130, 246, 0.3); }
+
+        /* --- MODALS --- */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 10000; opacity: 0; transition: opacity 0.3s ease; }
+        .modal-overlay.active { opacity: 1; }
+        .modal-box { background: var(--surface); border-radius: 24px; width: 95%; max-width: 800px; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 40px 80px rgba(0,0,0,0.3); transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); border: 1px solid var(--border-light); }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .modal-header { padding: 25px 40px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; background: var(--surface); transition: background 0.5s ease;}
+        .modal-header h2 { font-size: 26px; font-weight: 800; background: linear-gradient(90deg, var(--primary), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+        .close-btn { border: none; background: none; font-size: 28px; cursor: pointer; color: var(--text-sub); transition: 0.2s; padding-left: 15px;}
+        .close-btn:hover { color: var(--text-main); }
+        .scroll-area { padding: 0 40px 40px; overflow-y: auto; flex: 1; background: var(--surface); color: var(--text-main); transition: background 0.5s ease;}
+
+        @media (max-width: 768px) { 
+            .bento-grid { grid-template-columns: 1fr; gap: 15px; } 
+            .top-nav { top: 20px; right: 20px; }
+            .dash-header h1 { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <div class="top-nav">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark Mode" id="themeBtn">🌙</button>
+        <span class="status-badge">Authorized Personnel</span>
+        <button class="signout-btn" onclick="handleLogout()">Sign Out</button>
+    </div>
+
+    <div id="dashboard-section">
+        <header class="dash-header">
+            <h1 class="gradient-text" id="greeting-text">Welcome Back</h1>
+            <p>Access your training toolkits and resources.</p>
+            <div id="clock-widget" class="clock-widget">Loading time...</div>
+        </header>
+
+        <div class="bento-grid" id="cardContainer">
+            <div class="card" onclick="window.location.href='templates.html'">
+                <div class="card-content-wrapper">
+                    <div class="icon-wrapper icon-orange">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="14" height="18" x="5" y="3" rx="2" ry="2"></rect><path d="M5 8h14M10 17h4"></path></svg>
+                    </div>
+                    <div>
+                        <h3>Templates & Tools</h3>
+                        <p>Access your Extra Pages templates & policy generators.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card" onclick="openModal('protocolModal')">
+                <div class="card-content-wrapper">
+                    <div class="icon-wrapper icon-purple">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    </div>
+                    <div>
+                        <h3>Reminders & Protocols</h3>
+                        <p>Design revision timelines, escalation paths, and operational requirements.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" onclick="openModal('trainingModal')">
+                <div class="card-content-wrapper">
+                    <div class="icon-wrapper icon-blue">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                    </div>
+                    <div>
+                        <h3>Training Materials</h3>
+                        <p>Comprehensive step-by-step master checklists and operational training.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" onclick="openModal('newHiresModal')">
+                <div class="card-content-wrapper">
+                    <div class="icon-wrapper icon-green">
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                    <div>
+                        <h3>New Hires</h3>
+                        <p>Onboarding workflows and essential training guidelines for new team members.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="protocolModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header"><h2>Reminders</h2><button onclick="closeModal('protocolModal')" class="close-btn">✕</button></div>
+            <div class="scroll-area" style="padding-top:30px;">
+                <div style="border-left:4px solid var(--primary); padding:20px; background:var(--panel-bg); margin-bottom:20px; border-radius: 0 8px 8px 0; transition: background 0.5s ease;">
+                    <h4 style="color:var(--primary); margin-bottom:10px;">DESIGN REVISIONS</h4>
+                    <p>Revisions take 12-14 business days. Managing expectations is key.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="trainingModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header"><h2>Master Checklist</h2><button onclick="closeModal('trainingModal')" class="close-btn">✕</button></div>
+            <div class="scroll-area"><p style="padding:20px; text-align:center; margin-top:20px;">Checklist data goes here.</p></div>
+        </div>
+    </div>
+
+    <div id="newHiresModal" class="modal-overlay">
+        <div class="modal-box">
+            <div class="modal-header"><h2>New Hire Onboarding</h2><button onclick="closeModal('newHiresModal')" class="close-btn">✕</button></div>
+            <div class="scroll-area"><p style="padding:50px; text-align:center;">Onboarding guidelines go here.</p></div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Dynamic Greeting & Live Clock ---
+        function updateTime() {
+            const now = new Date();
+            
+            // Set Greeting
+            const hour = now.getHours();
+            let greeting = "Good evening";
+            if (hour < 12) greeting = "Good morning";
+            else if (hour < 18) greeting = "Good afternoon";
+            document.getElementById('greeting-text').innerText = greeting + ", Team";
+
+            // Set Clock String (e.g., "Friday, May 15, 2026 • 8:53 AM")
+            const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const optionsTime = { hour: 'numeric', minute: '2-digit', hour12: true };
+            const dateStr = now.toLocaleDateString('en-US', optionsDate);
+            const timeStr = now.toLocaleTimeString('en-US', optionsTime);
+            
+            document.getElementById('clock-widget').innerText = dateStr + ' • ' + timeStr;
+        }
+
+        // --- 2. Spotlight Mouse Effect Logic ---
+        document.getElementById('cardContainer').onmousemove = e => {
+            for(const card of document.getElementsByClassName("card")) {
+                const rect = card.getBoundingClientRect(),
+                      x = e.clientX - rect.left,
+                      y = e.clientY - rect.top;
+
+                card.style.setProperty("--mouse-x", `${x}px`);
+                card.style.setProperty("--mouse-y", `${y}px`);
+            };
+        };
+
+        // --- 3. Initial Load Checks ---
+        window.onload = function() {
+            updateTime(); 
+            setInterval(updateTime, 1000); // Keep clock ticking
+            
+            if (localStorage.getItem('kb_dark_mode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeBtn').innerText = '☀️';
+            }
+
+            if (localStorage.getItem('kb_logged_in') !== 'true' && sessionStorage.getItem('kb_session_active') !== 'true') {
+                window.location.href = 'index.html'; 
+            }
+        };
+
+        // --- 4. Dark Mode Toggle ---
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('themeBtn');
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('kb_dark_mode', 'true');
+                btn.innerText = '☀️';
+            } else {
+                localStorage.setItem('kb_dark_mode', 'false');
+                btn.innerText = '🌙';
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('kb_logged_in');
+            sessionStorage.removeItem('kb_session_active');
+            window.location.href = 'index.html';
+        }
+
+        function openModal(id) { 
+            const modal = document.getElementById(id);
+            if(modal) {
+                modal.style.display = 'flex'; 
+                setTimeout(() => { modal.classList.add('active'); }, 10);
+            }
+        }
+        
+        function closeModal(id) { 
+            const modal = document.getElementById(id);
+            if(modal) {
+                modal.classList.remove('active');
+                setTimeout(() => { modal.style.display = 'none'; }, 300);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WSC | Professional Workspace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- LIGHT MODE VARIABLES --- */
+        :root { 
+            --primary: #1a73e8; 
+            --accent-purple: #8a2be2; 
+            --vibrant-gradient: linear-gradient(135deg, #1a73e8 0%, #8a2be2 100%);
+            --vibrant-glow: 0 10px 30px rgba(138, 43, 226, 0.3);
+            
+            --surface: #ffffff; 
+            --text-main: #1d1d1f; 
+            --text-sub: #5f6368; 
+            --doc-red: #ff3b30; 
+            --doc-orange: #ff9500;
+            --doc-green: #34c759;
+            
+            --border-light: rgba(0, 0, 0, 0.1); 
+            --container-bg: rgba(255, 255, 255, 0.6);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --glass-card: rgba(255, 255, 255, 0.95);
+            --folder-bg: rgba(0, 0, 0, 0.03);
+            
+            --input-bg: #f8fafc;
+            --input-border: #cbd5e1;
+            
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --shadow-float: 0 20px 50px rgba(0,0,0,0.05);
+            --hover-bg: rgba(26, 115, 232, 0.08);
+        }
+
+        /* --- DARK MODE VARIABLES --- */
+        body.dark-mode {
+            --primary: #60a5fa; 
+            --accent-purple: #c084fc; 
+            --vibrant-gradient: linear-gradient(135deg, #60a5fa 0%, #c084fc 100%);
+            --vibrant-glow: 0 10px 30px rgba(192, 132, 252, 0.3);
+            
+            --text-main: #f8fafc; 
+            --text-sub: #cbd5e1; 
+            --surface: #1e293b; 
+            --border-light: rgba(255, 255, 255, 0.1); 
+            
+            --container-bg: rgba(15, 23, 42, 0.4);
+            --card-bg: rgba(30, 41, 59, 0.6);
+            --glass-card: rgba(15, 23, 42, 0.7);
+            --folder-bg: rgba(0, 0, 0, 0.25);
+            
+            --input-bg: #0f172a;
+            --input-border: rgba(255, 255, 255, 0.1);
+            
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.4);
+            --shadow-float: 0 20px 50px rgba(0,0,0,0.4);
+            --hover-bg: rgba(255, 255, 255, 0.05);
+            
+            background: linear-gradient(-45deg, #020617, #0f172a, #1e1b4b, #170f36);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: linear-gradient(-45deg, #ccfbf1, #fdf4ff, #dbeafe, #fae8ff);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh; 
+            width: 100vw;
+            color: var(--text-main); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 24px;
+            overflow: hidden;
+            transition: color 0.5s ease;
+        }
+
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        @keyframes pulseRed { 0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.5); } 70% { box-shadow: 0 0 0 10px rgba(255, 59, 48, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); } }
+
+        /* --- ORBS --- */
+        .bg-orb { position: absolute; border-radius: 50%; filter: blur(100px); z-index: -10; animation: float 12s infinite alternate ease-in-out; pointer-events: none;}
+        .orb-1 { width: 50vw; height: 50vw; background: rgba(26, 115, 232, 0.35); top: -10%; left: -10%; }
+        .orb-2 { width: 45vw; height: 45vw; background: rgba(138, 43, 226, 0.3); bottom: -10%; right: -5%; animation-delay: -6s; }
+        body.dark-mode .orb-1 { background: rgba(96, 165, 250, 0.2); }
+        body.dark-mode .orb-2 { background: rgba(168, 85, 247, 0.2); }
+        @keyframes float { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(30px) scale(1.05); } }
+
+        /* --- BENTO BOX APP WRAPPER --- */
+        .app-wrapper {
+            display: flex;
+            gap: 24px;
+            width: 100%;
+            max-width: 1400px;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* --- FLOATING BENTO SIDEBAR --- */
+        .bento-sidebar {
+            width: 290px;
+            background: var(--container-bg);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--border-light);
+            border-radius: 28px;
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px;
+            box-shadow: var(--shadow-soft);
+            animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .brand-header {
+            padding: 0 12px 24px;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 20px;
+        }
+
+        .brand-header h2 {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- CREATIVE NESTED FOLDERS (DROPDOWNS) --- */
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 14px 16px;
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            border-radius: 16px; /* Pill-like */
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .dropdown-toggle:hover {
+            background: var(--hover-bg);
+        }
+
+        .dropdown-toggle.active {
+            background: rgba(255,255,255,0.05);
+            border-color: var(--border-light);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .chevron {
+            font-size: 10px;
+            opacity: 0.6;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dropdown-toggle.active .chevron {
+            transform: rotate(180deg);
+        }
+
+        /* The "Glass Folder" Container */
+        .dropdown-menu {
+            display: none; 
+            flex-direction: column;
+            background: var(--folder-bg);
+            border-radius: 16px;
+            padding: 8px;
+            margin-top: 8px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-light);
+            /* This left border acts as the 'active' line for the folder */
+            border-left: 3px solid transparent; 
+            animation: fadeIn 0.3s ease;
+            transition: border-left-color 0.3s ease;
+        }
+
+        .dropdown-menu.show {
+            display: flex; 
+        }
+
+        /* Nav Buttons inside folders */
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            padding: 12px 14px;
+            margin-bottom: 4px;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            color: var(--text-sub);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            text-align: left;
+        }
+
+        .nav-btn:hover { 
+            background: var(--hover-bg); 
+            color: var(--text-main); 
+            transform: translateX(4px); /* Slight hover nudge */
+        }
+        
+        .nav-btn.active { 
+            background: var(--vibrant-gradient); 
+            color: #ffffff; 
+            box-shadow: var(--vibrant-glow);
+            transform: scale(1.02);
+        }
+
+        /* --- PROFESSIONAL SIDEBAR EXIT --- */
+        .exit-footer-btn {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.05); 
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        body.dark-mode .exit-footer-btn { background: rgba(0, 0, 0, 0.2); }
+        
+        .exit-footer-btn:hover {
+            background: rgba(255, 59, 48, 0.1);
+            color: var(--doc-red);
+            border-color: rgba(255, 59, 48, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* --- FLOATING MAIN CONTENT --- */
+        .bento-main {
+            flex: 1;
+            background: var(--container-bg);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--border-light);
+            border-radius: 28px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-soft);
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+        }
+
+        .top-header {
+            height: 76px;
+            padding: 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-light);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .top-header h2 {
+            font-size: 22px;
+            font-weight: 800;
+            background: var(--vibrant-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .theme-toggle { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border-light); 
+            font-size: 18px; 
+            cursor: pointer; 
+            padding: 8px 12px; 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: all 0.3s ease; 
+            color: var(--text-main); 
+        }
+        .theme-toggle:hover { transform: translateY(-2px); border-color: var(--primary);}
+
+        .scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px;
+            scroll-behavior: smooth;
+        }
+
+        .scroll-area::-webkit-scrollbar { width: 6px; }
+        .scroll-area::-webkit-scrollbar-track { background: transparent; margin: 20px 0;}
+        .scroll-area::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+
+        .tab-pane { display: none; animation: scaleIn 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .tab-pane.active { display: block; }
+
+        /* --- WIDGET & CARD STYLING --- */
+        .generator-card { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 24px; padding: 40px; box-shadow: var(--shadow-float); max-width: 950px; margin: 0 auto;}
+        .generator-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; color: var(--text-main);}
+        .generator-card p { font-size: 14px; color: var(--text-sub); margin-bottom: 25px; line-height: 1.5;}
+        
+        .input-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px; }
+        .input-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+        
+        .input-field-gen { padding: 14px 18px; font-size: 14px; background: var(--input-bg); color: var(--text-main); border: 1px solid var(--input-border); border-radius: 12px; width: 100%; outline: none; transition: all 0.3s ease; font-family: inherit;}
+        .input-field-gen:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.15);}
+        .input-field-gen::placeholder { color: var(--text-sub); opacity: 0.8;}
+        
+        .generate-btn { background: var(--vibrant-gradient); color: white; border: none; padding: 16px; width: 100%; border-radius: 14px; font-weight: 800; font-size: 15px; cursor: pointer; margin-bottom: 24px; transition: 0.2s; font-family: inherit; box-shadow: var(--vibrant-glow);}
+        .generate-btn:hover { transform: translateY(-2px); filter: brightness(1.1);}
+
+        .output-box { width: 100%; height: 280px; padding: 24px; border-radius: 16px; border: 1px solid var(--input-border); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; color: var(--text-main); background: var(--input-bg); resize: vertical; line-height: 1.7; outline: none; transition: border-color 0.3s ease;}
+        .output-box:focus { border-color: var(--primary); }
+
+        .btn-copy-themed { position: absolute; top: 16px; right: 16px; background: var(--text-main); color: var(--surface); border: none; padding: 8px 18px; border-radius: 10px; font-weight: 800; font-size: 12px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .btn-copy-themed:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
+        body.dark-mode .btn-copy-themed { background: var(--primary); color: #fff; }
+
+        /* =========================================
+           CREATIVE ORDER PROCESSING UI
+           ========================================= */
+
+        .creative-flowchart { display: flex; align-items: flex-start; justify-content: space-between; position: relative; margin-bottom: 50px; background: var(--glass-card); padding: 30px 40px; border-radius: 24px; border: 1px solid var(--border-light); box-shadow: var(--shadow-float); }
+        .flow-line { position: absolute; top: 58px; left: 10%; right: 10%; height: 4px; background: var(--vibrant-gradient); border-radius: 4px; z-index: 1; opacity: 0.3; }
+        .flow-node { position: relative; z-index: 2; text-align: center; width: 22%; display: flex; flex-direction: column; align-items: center;}
+        .flow-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 16px; background: var(--surface); border: 2px solid transparent; box-shadow: 0 10px 25px rgba(0,0,0,0.08); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);}
+        .flow-node:hover .flow-icon { transform: scale(1.1) translateY(-5px); border-color: var(--primary); }
+        
+        /* Vibrant Icons for Flowchart */
+        .flow-node:nth-child(2) .flow-icon { background: linear-gradient(135deg, #e0f2fe, #bfdbfe); border-color: #60a5fa;}
+        .flow-node:nth-child(3) .flow-icon { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); border-color: #c084fc;}
+        .flow-node:nth-child(4) .flow-icon { background: linear-gradient(135deg, #fef3c7, #fde68a); border-color: #fbbf24;}
+        .flow-node:nth-child(5) .flow-icon { background: linear-gradient(135deg, #dcfce7, #bbf7d0); border-color: #4ade80;}
+        body.dark-mode .flow-node:nth-child(2) .flow-icon { background: linear-gradient(135deg, #1e3a8a, #1e40af); }
+        body.dark-mode .flow-node:nth-child(3) .flow-icon { background: linear-gradient(135deg, #581c87, #6b21a8); }
+        body.dark-mode .flow-node:nth-child(4) .flow-icon { background: linear-gradient(135deg, #78350f, #92400e); }
+        body.dark-mode .flow-node:nth-child(5) .flow-icon { background: linear-gradient(135deg, #14532d, #065f46); }
+
+        .flow-title { font-weight: 800; font-size: 14px; color: var(--text-main); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;}
+        .flow-desc { font-size: 12px; color: var(--text-sub); line-height: 1.4;}
+
+        .creative-step-card { display: flex; gap: 30px; background: var(--glass-card); border: 1px solid var(--border-light); border-radius: 24px; padding: 35px; margin-bottom: 30px; box-shadow: var(--shadow-soft); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); position: relative; overflow: hidden;}
+        .creative-step-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-float); border-color: var(--primary);}
+
+        .step-number { font-size: 48px; font-weight: 800; background: var(--vibrant-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; opacity: 0.15; position: absolute; top: -10px; right: 20px; pointer-events: none;}
+        .step-badge { flex-shrink: 0; width: 48px; height: 48px; border-radius: 50%; background: var(--vibrant-gradient); color: white; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; box-shadow: var(--vibrant-glow); }
+        
+        .step-content { flex: 1; }
+        .step-content h4 { font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 12px; letter-spacing: -0.5px;}
+        .step-content p { font-size: 15px; color: var(--text-sub); margin-bottom: 20px; line-height: 1.6;}
+        .step-content strong { color: var(--text-main); font-weight: 700;}
+        
+        /* THEME ALIGNED SCREENSHOT BORDER (BLUE) */
+        .image-overlay-container { 
+            position: relative; 
+            display: inline-block; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            border: 2px solid var(--primary); /* The Theme Blue! */
+            box-shadow: 0 4px 15px rgba(26, 115, 232, 0.15); 
+            margin-bottom: 20px; 
+            background: #fff; 
+            width: 100%; 
+            max-width: 900px;
+        }
+        .image-overlay-container img { width: 100%; display: block; height: auto;}
+        
+        /* The Red Box Overlay */
+        .red-box-highlight {
+            position: absolute;
+            border: 2px solid var(--doc-red);
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(255, 59, 48, 0.4);
+            animation: pulseRed 2s infinite;
+            pointer-events: none; 
+        }
+        
+        .highlight-red { color: var(--doc-red); font-weight: 800; background: rgba(255, 59, 48, 0.1); padding: 2px 8px; border-radius: 6px; border: 1px dashed var(--doc-red);}
+
+        .step-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--input-border); font-size: 13px; text-align: left; margin-bottom: 20px; background: var(--surface);}
+        .step-table th { background: var(--input-bg); padding: 12px 15px; font-weight: 700; color: var(--text-main); border-bottom: 1px solid var(--input-border);}
+        .step-table td { padding: 12px 15px; border-bottom: 1px solid var(--input-border); color: var(--text-sub);}
+        .step-table tr:last-child td { border-bottom: none;}
+
+        @media (max-width: 900px) {
+            body { padding: 0; }
+            .app-wrapper { flex-direction: column; height: 100vh; gap: 0; border-radius: 0; }
+            .bento-sidebar { width: 100%; border-radius: 0; border-bottom: 1px solid var(--border-light); padding: 16px;}
+            .bento-main { border-radius: 0; border: none; height: auto; flex: 1; }
+        }
+    </style>
+</head>
+
+<body class="dark-mode">
+    
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <div class="app-wrapper">
+        
+        <aside class="bento-sidebar">
+            <div class="brand-header">
+                <h2><span style="font-size: 24px; color: var(--primary);">❖</span> Workspace</h2>
+            </div>
+
+            <nav>
+                <button class="dropdown-toggle" onclick="toggleDropdown('extra-pages-menu', this)">
+                    <div style="display: flex; align-items: center; gap: 8px;">📂 Extra Pages</div>
+                    <span class="chevron">▼</span>
+                </button>
+                
+                <div id="extra-pages-menu" class="dropdown-menu">
+                    <button class="nav-btn theme-purple" onclick="openTab('tab-about', this, 'About Us Generator', 'extra-pages-menu')">📝 About Us</button>
+                    <button class="nav-btn theme-purple" onclick="openTab('tab-terms', this, 'Terms & Conditions', 'extra-pages-menu')">⚖️ Terms & Conditions</button>
+                    <button class="nav-btn theme-purple" onclick="openTab('tab-privacy', this, 'Privacy Policy', 'extra-pages-menu')">🔒 Privacy Policy</button>
+                    <button class="nav-btn theme-purple" onclick="openTab('tab-shipping', this, 'Shipping & Returns', 'extra-pages-menu')">📦 Shipping & Returns</button>
+                </div>
+
+                <button class="dropdown-toggle active" style="margin-top: 12px;" onclick="toggleDropdown('doba-menu', this)">
+                    <div style="display: flex; align-items: center; gap: 8px;">📦 Processing Doba</div>
+                    <span class="chevron">▼</span>
+                </button>
+
+                <div id="doba-menu" class="dropdown-menu show" style="border-left-color: var(--theme-blue);">
+                    <button class="nav-btn theme-blue active" onclick="openTab('tab-sop-creative', this, 'Processing Doba: Creative Visual SOP', 'doba-menu')">✨ Creative Visual SOP</button>
+                    <button class="nav-btn theme-blue" onclick="openTab('tab-sop-word', this, 'Processing Doba: Word Document SOP', 'doba-menu')">📄 Word Document SOP</button>
+                    <button class="nav-btn theme-blue" onclick="openTab('tab-client-guide', this, 'Processing Doba: Client-Facing Guide', 'doba-menu')">🤝 Client-Facing Guide</button>
+                </div>
+            </nav>
+
+            <button class="exit-footer-btn" onclick="window.location.href='dashboard.html'">
+                ⏏️ Exit to Dashboard
+            </button>
+        </aside>
+
+        <main class="bento-main">
+            
+            <header class="top-header">
+                <h2 id="page-title">Processing Doba: Creative Visual SOP</h2>
+                <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Day/Night Mode" id="themeBtn">☀️</button>
+            </header>
+
+            <div class="scroll-area">
+                
+                <div id="tab-about" class="tab-pane">
+                    <div class="generator-card">
+                        <h3>About Us Generator</h3>
+                        <p>Fill in the client details below to instantly generate a professionally formatted About Us page.</p>
+                        <div class="input-grid">
+                            <input type="text" id="aboutBizName" class="input-field-gen" placeholder="Company Name">
+                            <input type="text" id="aboutCategory" class="input-field-gen" placeholder="Product Category (e.g., electronics)">
+                        </div>
+                        <button onclick="generateAboutUs()" class="generate-btn">Generate About Us</button>
+                        <div style="position: relative;">
+                            <textarea id="aboutOutput" class="output-box" placeholder="Your custom About Us text will appear here..."></textarea>
+                            <button onclick="copyTemplate(this, document.getElementById('aboutOutput').value)" class="btn-copy-themed">Copy Text</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-terms" class="tab-pane">
+                    <div class="generator-card">
+                        <h3>Terms & Conditions</h3>
+                        <p>Generate a standardized set of Terms and Conditions tailored to the client's business location.</p>
+                        <div class="input-grid">
+                            <input type="text" id="termsBizName" class="input-field-gen" placeholder="Company Name">
+                            <input type="text" id="termsStateInput" class="input-field-gen" placeholder="Governing State">
+                        </div>
+                        <button onclick="generateTerms()" class="generate-btn">Generate Terms & Conditions</button>
+                        <div style="position: relative;">
+                            <textarea id="termsOutput" class="output-box" placeholder="Your custom Terms & Conditions text will appear here..."></textarea>
+                            <button onclick="copyTemplate(this, document.getElementById('termsOutput').value)" class="btn-copy-themed">Copy Text</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-privacy" class="tab-pane">
+                    <div class="generator-card">
+                        <h3>Privacy Policy</h3>
+                        <p>Enter the client's Contact Us link below to instantly generate a compliant Privacy Policy.</p>
+                        <div class="input-grid" style="grid-template-columns: 1fr;">
+                            <input type="text" id="privacyContactInput" class="input-field-gen" placeholder="Contact Us Link (URL)">
+                        </div>
+                        <button onclick="generatePrivacy()" class="generate-btn">Generate Privacy Policy</button>
+                        <div style="position: relative;">
+                            <textarea id="privacyOutput" class="output-box" placeholder="Your custom Privacy Policy text will appear here..."></textarea>
+                            <button onclick="copyTemplate(this, document.getElementById('privacyOutput').value)" class="btn-copy-themed">Copy Text</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-shipping" class="tab-pane">
+                    <div class="generator-card">
+                        <h3>Shipping & Returns</h3>
+                        <p>Fill in the client details below and select a policy type to generate a full-length policy.</p>
+                        <div class="input-grid-4">
+                            <input type="text" id="shippingBizName" class="input-field-gen" placeholder="Business Name">
+                            <input type="text" id="shippingUrlInput" class="input-field-gen" placeholder="Website URL">
+                            <input type="text" id="shippingContactInput" class="input-field-gen" placeholder="Contact Us Link">
+                            <input type="text" id="shippingEmailInput" class="input-field-gen" placeholder="Business Email">
+                        </div>
+                        <div style="margin-bottom: 24px;">
+                            <label style="font-size: 13px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; display: block; text-transform: uppercase; letter-spacing: 0.5px;">Select Policy Type</label>
+                            <select id="shippingPolicyType" class="input-field-gen" style="cursor: pointer;">
+                                <option value="short">Option 1: Standard Short HTML Policy (Recommended)</option>
+                                <option value="long">Option 2: Detailed General Terms Policy</option>
+                            </select>
+                        </div>
+                        <button onclick="generateShipping()" class="generate-btn">Generate Shipping & Returns</button>
+                        <div style="position: relative;">
+                            <textarea id="shippingOutput" class="output-box" placeholder="Your custom policy will appear here..."></textarea>
+                            <button onclick="copyTemplate(this, document.getElementById('shippingOutput').value)" class="btn-copy-themed">Copy Text</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-sop-creative" class="tab-pane active">
+                    
+                    <div class="creative-flowchart">
+                        <div class="flow-line"></div>
+                        
+                        <div class="flow-node">
+                            <div class="flow-icon">💻</div>
+                            <div class="flow-title">1. Client Order</div>
+                            <div class="flow-desc">Purchased on Warhead</div>
+                        </div>
+                        
+                        <div class="flow-node">
+                            <div class="flow-icon">⚙️</div>
+                            <div class="flow-title">2. Processing</div>
+                            <div class="flow-desc">Secure item on Doba</div>
+                        </div>
+
+                        <div class="flow-node">
+                            <div class="flow-icon">📦</div>
+                            <div class="flow-title">3. Logistics</div>
+                            <div class="flow-desc">Supplier dispatches</div>
+                        </div>
+
+                        <div class="flow-node">
+                            <div class="flow-icon">🤝</div>
+                            <div class="flow-title">4. Fulfillment</div>
+                            <div class="flow-desc">Client is notified</div>
+                        </div>
+                    </div>
+
+                    <div class="creative-step-card">
+                        <div class="step-number">01</div>
+                        <div class="step-badge">1</div>
+                        <div class="step-content">
+                            <h4>Initial Order Intake</h4>
+                            <p><strong>1.1</strong> Locate the automated "New Order" notification email from Warhead in your designated inbox.</p>
+                            <div class="image-overlay-container">
+                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Email.png" alt="Warhead Email Notification">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="creative-step-card">
+                        <div class="step-number">02</div>
+                        <div class="step-badge">2</div>
+                        <div class="step-content">
+                            <h4>Update Order Status to Processing</h4>
+                            <p><strong>2.1</strong> From the Warhead dashboard, click on the <span class="highlight-red">Store</span> icon in the Manage section.</p>
+                            
+                            <div class="image-overlay-container">
+                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Dashboard.png" alt="Warhead Dashboard Store">
+                                <div class="red-box-highlight" style="top: 34%; left: 5.5%; width: 10.5%; height: 24%;"></div>
+                            </div>
+                            
+                            <p><strong>2.2</strong> Hover your cursor over the <strong>Store</strong> tab in the top navigation menu, then select <span class="highlight-red">Orders</span> from the dropdown list.</p>
+                            <div class="image-overlay-container">
+                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\STORE.png" alt="Warhead Store Dropdown">
+                                <div class="red-box-highlight" style="top: 16.5%; left: 9.5%; width: 7%; height: 5%;"></div>
+                            </div>
+
+                            <p><strong>2.3</strong> Locate the customer's transaction. Hover your cursor over the order row to reveal the action buttons, then click <span class="highlight-red">Modify</span>.</p>
+                            <div class="image-overlay-container">
+                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Modify.png" alt="Warhead Modify Button">
+                                <div class="red-box-highlight" style="top: 31%; left: 9.5%; width: 5%; height: 4%;"></div>
+                            </div>
+
+                            <p><strong>2.4</strong> Scroll down to the very bottom of the order details page. Change the <strong>Status</strong> dropdown from <em>Pending</em> to <em>Processing</em>, and click <span class="highlight-red">Save</span>.</p>
+                            <div class="image-overlay-container">
+                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\processing.png" alt="Warhead Status Update">
+                                <div class="red-box-highlight" style="top: 79%; left: 1.2%; width: 7%; height: 6%;"></div>
+                            </div>
+
+                            <p><strong>2.5</strong> Once you click Save, the customer will automatically receive an email updating them on their order status.</p>
+                            <div class="image-overlay-container">
+                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\image_08f2bb.png" alt="Automated Email Update">
+                                <div class="red-box-highlight" style="top: 80%; left: 15%; width: 30%; height: 15%;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="creative-step-card">
+                        <div class="step-number">03</div>
+                        <div class="step-badge">3</div>
+                        <div class="step-content">
+                            <h4>Source Product on Doba</h4>
+                            <p><strong>3.1</strong> Copy the <strong>SKU</strong> from the Warhead invoice.</p>
+                            <p><strong>3.2</strong> Open a new browser tab and log in to the Doba supplier portal.</p>
+                            <p><strong>3.3</strong> Paste the Item No. into the Doba search bar and select the correct item.</p>
+                        </div>
+                    </div>
+
+                    <div class="creative-step-card">
+                        <div class="step-number">04</div>
+                        <div class="step-badge">4</div>
+                        <div class="step-content">
+                            <h4>Place the Supplier Order</h4>
+                            <p><strong>4.1</strong> Click <strong>Add to Cart</strong>, navigate to your cart, and Check Out.</p>
+                            <p><strong>4.2</strong> Important: Enter the <strong>Customer's Shipping Address</strong> exactly as it appears on the Warhead invoice, not your own.</p>
+                            <p><strong>4.3</strong> Submit your payment to finalize the purchase on Doba.</p>
+                        </div>
+                    </div>
+
+                    <div class="creative-step-card">
+                        <div class="step-number">05</div>
+                        <div class="step-badge">5</div>
+                        <div class="step-content">
+                            <h4>Update Tracking Information</h4>
+                            <p><strong>5.1</strong> Once you receive the tracking number notification from Doba, return to the Warhead order details.</p>
+                            <p><strong>5.2</strong> Update the Status to <span class="highlight-red">Shipped</span>, input the tracking details into the note section, and click Save.</p>
+                        </div>
+                    </div>
+
+                    <div class="creative-step-card" style="margin-bottom: 0;">
+                        <div class="step-number">06</div>
+                        <div class="step-badge">6</div>
+                        <div class="step-content">
+                            <h4>Complete the Order</h4>
+                            <p><strong>6.1</strong> Monitor the tracking. Once the customer has successfully received the order, change the Warhead status to <strong>Completed</strong> to finalize the lifecycle.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="tab-sop-word" class="tab-pane">
+                    <div class="generator-card" style="padding: 0; overflow: hidden; background: #fff;">
+                        <div style="background: var(--input-bg); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-light);">
+                            <h3 style="margin: 0; font-size: 16px; background: none; -webkit-text-fill-color: #0f172a; color: #0f172a;">📋 SOP Rich-Text Format</h3>
+                            <button onclick="copyRichText('copyable-sop-area', this)" style="background: #1a73e8; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer;">Copy Full Guide</button>
+                        </div>
+
+                        <div id="copyable-sop-area" style="padding: 40px; background: #ffffff; color: #000000; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 900px; margin: 0 auto; line-height: 1.5; text-align: left;">
+                            
+                            <table style="width: 100%; text-align: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; border-collapse: collapse; margin-bottom: 50px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                                <tr><td colspan="7" style="background: #0f172a; padding: 18px 25px; font-weight: 800; font-size: 13pt; color: #ffffff; text-align: left; text-transform: uppercase; letter-spacing: 1px;"><span style="color: #60a5fa; margin-right: 8px;">◈</span> Dropshipping Lifecycle</td></tr>
+                                <tr>
+                                    <td style="padding: 35px 10px; width: 22%; vertical-align: top;">
+                                        <div style="background: #1e293b; color: white; border-radius: 16px; width: 56px; height: 56px; line-height: 56px; font-size: 26px; margin: 0 auto 16px auto;">💻</div>
+                                        <strong style="color: #0f172a; font-size: 11pt; text-transform: uppercase;">1. Client Order</strong><br>
+                                        <div style="font-size: 9.5pt; color: #64748b; margin-top: 8px;">Customer purchases via Warhead.</div>
+                                    </td>
+                                    <td style="width: 4%; color: #cbd5e1; font-size: 24px; vertical-align: middle;">➔</td>
+                                    <td style="padding: 35px 10px; width: 22%; vertical-align: top;">
+                                        <div style="background: #2563eb; color: white; border-radius: 16px; width: 56px; height: 56px; line-height: 56px; font-size: 26px; margin: 0 auto 16px auto;">⚙️</div>
+                                        <strong style="color: #0f172a; font-size: 11pt; text-transform: uppercase;">2. Processing</strong><br>
+                                        <div style="font-size: 9.5pt; color: #64748b; margin-top: 8px;">You secure the item on Doba.</div>
+                                    </td>
+                                    <td style="width: 4%; color: #cbd5e1; font-size: 24px; vertical-align: middle;">➔</td>
+                                    <td style="padding: 35px 10px; width: 22%; vertical-align: top;">
+                                        <div style="background: #7c3aed; color: white; border-radius: 16px; width: 56px; height: 56px; line-height: 56px; font-size: 26px; margin: 0 auto 16px auto;">📦</div>
+                                        <strong style="color: #0f172a; font-size: 11pt; text-transform: uppercase;">3. Logistics</strong><br>
+                                        <div style="font-size: 9.5pt; color: #64748b; margin-top: 8px;">Supplier dispatches package.</div>
+                                    </td>
+                                    <td style="width: 4%; color: #cbd5e1; font-size: 24px; vertical-align: middle;">➔</td>
+                                    <td style="padding: 35px 10px; width: 22%; vertical-align: top;">
+                                        <div style="background: #10b981; color: white; border-radius: 16px; width: 56px; height: 56px; line-height: 56px; font-size: 26px; margin: 0 auto 16px auto;">🤝</div>
+                                        <strong style="color: #0f172a; font-size: 11pt; text-transform: uppercase;">4. Fulfillment</strong><br>
+                                        <div style="font-size: 9.5pt; color: #64748b; margin-top: 8px;">Client is notified of delivery.</div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <h2 style="font-size: 18pt; font-weight: bold; margin-bottom: 30px; border-bottom: 2px solid #eeeeee; padding-bottom: 10px; color: #333333;">ORDER PROCESSING STEPS</h2>
+                            
+                            <h3 style="font-size: 14pt; margin-bottom: 15px; color: #000000;">Step 1: Initial Order Intake</h3>
+                            <div style="margin-left: 20px; margin-bottom: 40px;">
+                                <p style="font-size: 14pt; margin-bottom: 15px; color: #111111;"><strong>1.1 Locate the automated "New Order" notification email from Warhead.</strong></p>
+                                <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Email.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; margin-bottom: 20px;" alt="Warhead Email Notification">
+                            </div>
+
+                            <h3 style="font-size: 14pt; margin-bottom: 15px; color: #000000;">Step 2: Update Order Status to Processing</h3>
+                            <div style="margin-left: 20px; margin-bottom: 40px;">
+                                <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.1 From the Warhead dashboard, click on the <span style="border: 2px solid #ff3b30; border-radius: 4px; padding: 2px 4px; color: #ff3b30;">Store</span> icon.</strong></p>
+                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%; max-width: 900px;">
+                                    <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Dashboard.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Dashboard Store">
+                                    <div style="position: absolute; top: 34%; left: 5.5%; width: 10.5%; height: 24%; border: 2px solid #ff3b30; border-radius: 6px;"></div>
+                                </div>
+
+                                <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.2 Hover your cursor over the Store tab in the top menu, then click <span style="border: 2px solid #ff3b30; border-radius: 4px; padding: 2px 4px; color: #ff3b30;">Orders</span>.</strong></p>
+                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%; max-width: 900px;">
+                                    <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\STORE.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Store Dropdown">
+                                    <div style="position: absolute; top: 16.5%; left: 9.5%; width: 7%; height: 5%; border: 2px solid #ff3b30; border-radius: 4px;"></div>
+                                </div>
+
+                                <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.3 Locate the customer's transaction. Hover your cursor over the order row to reveal the action buttons, then click <span style="border: 2px solid #ff3b30; padding: 2px 4px; color: #ff3b30;">Modify</span>.</strong></p>
+                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%; max-width: 900px;">
+                                    <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\Modify.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Modify Order">
+                                    <div style="position: absolute; top: 31%; left: 9.5%; width: 5%; height: 4%; border: 2px solid #ff3b30; border-radius: 4px;"></div>
+                                </div>
+
+                                <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.4 Scroll down to the very bottom of the page. Change the Status dropdown from <em>Pending</em> to <em>Processing</em>, and click <span style="border: 2px solid #ff3b30; padding: 2px 4px; color: #ff3b30;">Save</span>.</strong></p>
+                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%; max-width: 900px;">
+                                    <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\processing.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Warhead Processing Status">
+                                    <div style="position: absolute; top: 79%; left: 1.2%; width: 7%; height: 6%; border: 2px solid #ff3b30; border-radius: 4px;"></div>
+                                </div>
+
+                                <p style="font-size: 12pt; margin-bottom: 15px; color: #111111;"><strong>2.5 Once you click Save, the customer will automatically receive an email updating them on their order status.</strong></p>
+                                <div style="position: relative; display: inline-block; margin-bottom: 20px; width: 100%; max-width: 900px;">
+                                    <img src="C:\Users\April Ann Broma\OneDrive\Desktop\WSC Knowlege Base\IMAGES\image_08f2bb.png" style="max-width: 100%; border: 2px solid #1a73e8; border-radius: 8px; display: block;" alt="Automated Email Update">
+                                    <div style="position: absolute; top: 80%; left: 15%; width: 30%; height: 15%; border: 2px solid #ff3b30; border-radius: 4px;"></div>
+                                </div>
+                            </div>
+
+                            <h3 style="font-size: 14pt; margin-bottom: 15px; color: #000000;">3. Searching Products on Doba's site</h3>
+                            <div style="margin-left: 20px; margin-bottom: 30px;">
+                                <p style="font-size: 11pt; margin-bottom: 10px; color: #000000;"><strong>3.1</strong> Copy the SKU from the Warhead invoice.</p>
+                                <p style="font-size: 11pt; margin-bottom: 10px; color: #000000;"><strong>3.2</strong> Open a new tab and login to the Doba supplier site.</p>
+                                <p style="font-size: 11pt; margin-bottom: 10px; color: #000000;"><strong>3.3</strong> Paste the Item No. into Doba search and select the item.</p>
+                            </div>
+
+                            <h3 style="font-size: 14pt; margin-bottom: 15px; color: #000000;">4. Placing an order on Doba's site</h3>
+                            <div style="margin-left: 20px; margin-bottom: 30px;">
+                                <p style="font-size: 11pt; margin-bottom: 15px; color: #000000;"><strong>4.1 Click Add to Cart, go to cart, and Check Out using the Customer's Shipping Address from Warhead.</strong></p>
+                            </div>
+
+                            <h3 style="font-size: 14pt; margin-bottom: 15px; color: #000000;">5. Changing the status from Processing to Shipped</h3>
+                            <div style="margin-left: 20px; margin-bottom: 30px;">
+                                <p style="font-size: 11pt; color: #000000;"><strong>5.1</strong> Once you receive the tracking number from Doba, update the Warhead status to <strong>Shipped</strong> and Save.</p>
+                            </div>
+
+                            <h3 style="font-size: 14pt; margin-bottom: 15px; color: #000000;">6. Changing the status from Shipped to Completed</h3>
+                            <div style="margin-left: 20px; margin-bottom: 10px;">
+                                <p style="font-size: 11pt; color: #000000;"><strong>6.1</strong> Once the customer has received the order, change the status to <strong>Completed</strong>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-client-guide" class="tab-pane">
+                    <div class="generator-card">
+                        <h3>📄 Client-Facing Guide</h3>
+                        <p>Copy this plain-text guide and send it directly to your clients.</p>
+                        <div style="position: relative;">
+                            <textarea id="clientGuideOutput" class="output-box" style="height: 450px;" readonly>Order Processing Guide: How to Fulfill Your Customer's Order
+
+Congratulations on your new sale! Whenever a customer purchases an item from your store, you will need to process the order through your supplier so it can be shipped directly to the buyer. 
+
+Please follow these simple steps to fulfill your orders correctly:
+
+Step 1: Check Your Notifications
+• You will receive an automated email notification from your website whenever a customer makes a purchase. 
+• Keep an eye on your inbox for emails titled "New Order" to know when it is time to process a sale.
+
+Step 2: Update Your Order Status
+• Log into your Website Dashboard.
+• In the navigation menu, click on "Store" and then select "Orders".
+• Locate the new customer order in your list and click the "Modify" button.
+• Scroll to the very bottom of the page, change the Status dropdown from "Pending" to "Processing", and click "Save". 
+• Before leaving this page, highlight and copy the product's "SKU" number from the order details.
+
+Step 3: Locate the Product with Your Supplier
+• Open a new browser window and log into your Doba Supplier Portal.
+• Paste the SKU number you copied into the Doba search bar to locate the exact item your customer ordered.
+• Add the item to your cart and proceed to the checkout screen.
+
+Step 4: Enter the Customer's Shipping Details
+• During the Doba checkout process, carefully copy the customer's shipping address from your Website Dashboard.
+• Paste the customer's exact shipping details into the Doba shipping fields. (Important: Make sure you use the customer's address, not your own!)
+• Complete the payment to finalize the purchase.
+
+Step 5: Update the Tracking Information
+• Once Doba ships the item, they will update your portal with a tracking number.
+• Go back to your Website Dashboard (Store > Orders) and modify the customer's order one last time.
+• Enter the tracking number into the order details, change the status from "Processing" to "Shipped," and click "Save." 
+
+This final step will automatically email your customer to let them know their package is on the way!</textarea>
+                            <button onclick="copyTemplate(this, document.getElementById('clientGuideOutput').value)" class="btn-copy-themed">Copy Text</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Check Theme on Load: defaults to dark-mode.
+        window.onload = function() {
+            if (localStorage.getItem('kb_dark_mode') === 'false') {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('themeBtn').innerText = '🌙';
+            } else {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeBtn').innerText = '☀️';
+            }
+        };
+
+        // Dark Mode Toggle Logic
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('themeBtn');
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('kb_dark_mode', 'true');
+                btn.innerText = '☀️';
+            } else {
+                localStorage.setItem('kb_dark_mode', 'false');
+                btn.innerText = '🌙';
+            }
+        }
+
+        // Dropdown Toggle Logic
+        function toggleDropdown(menuId, btnElement) {
+            const menu = document.getElementById(menuId);
+            menu.classList.toggle('show');
+            btnElement.classList.toggle('active');
+        }
+
+        // Core Tab Switcher & Dynamic Title Update
+        function openTab(tabId, btnElement, titleText, parentMenuId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-pane').forEach(tab => tab.classList.remove('active'));
+            // Remove active state from all nested nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            // Highlight selected button
+            btnElement.classList.add('active');
+            
+            // Update the top header title
+            document.getElementById('page-title').innerText = titleText;
+
+            // Reset all folder accent colors
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.style.borderLeftColor = 'transparent';
+            });
+
+            // Set the active glowing border on the parent folder
+            const parentMenu = document.getElementById(parentMenuId);
+            if (parentMenu) {
+                // Determine color based on active button
+                let accentColor = 'var(--primary)';
+                if(btnElement.classList.contains('theme-purple')) accentColor = 'var(--theme-purple)';
+                if(btnElement.classList.contains('theme-teal')) accentColor = 'var(--theme-teal)';
+                if(btnElement.classList.contains('theme-blue')) accentColor = 'var(--theme-blue)';
+                
+                parentMenu.style.borderLeftColor = accentColor;
+            }
+        }
+
+        // Copy Plain Text
+        function copyTemplate(buttonElement, textToCopy) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalText = buttonElement.innerText;
+                buttonElement.innerText = 'Copied!';
+                setTimeout(() => { buttonElement.innerText = originalText; }, 2000);
+            });
+        }
+
+        // Copy Rich-Text HTML (for Word)
+        function copyRichText(elementId, btnElement) {
+            const el = document.getElementById(elementId);
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.selectNodeContents(el);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            
+            try {
+                document.execCommand('copy');
+                const originalText = btnElement.innerText;
+                btnElement.innerText = 'Copied to Clipboard!';
+                setTimeout(() => { btnElement.innerText = originalText; }, 2000);
+            } catch (err) {
+                console.error('Failed to copy', err);
+                alert("Failed to copy. Please highlight the text manually and press Ctrl+C.");
+            }
+            selection.removeAllRanges(); 
+        }
+
+        // --- Generator Functions ---
+        function generateAboutUs() {
+            const b = document.getElementById('aboutBizName').value || '[COMPANY NAME]';
+            const c = document.getElementById('aboutCategory').value || '[PRODUCT CATEGORY]';
+            document.getElementById('aboutOutput').value = `Thank you for visiting ${b}. Here at ${b}, our mission is to provide a fast, user-friendly, and customer-service-oriented online shopping experience. Through our years of industry experience, we have gone to great lengths to offer the best quality ${c} to our customers at affordable prices, as we know our customers will always be the key to our success.\n\nIf you have any questions about the ${c} we offer, please don't hesitate to contact us. Additionally, please review all our store policies, including our shipping and returns, terms and conditions, and privacy policy, as these policies govern your visit to ${b}.`;
+        }
+
+        function generateTerms() {
+            const b = document.getElementById('termsBizName').value || '[COMPANY NAME]';
+            const s = document.getElementById('termsStateInput').value || '[COMPANY STATE]';
+            document.getElementById('termsOutput').value = `Overview\n\nThis website is operated by ${b}... (Terms & Conditions governed by the State of ${s}).`;
+        }
+
+        function generatePrivacy() {
+            const c = document.getElementById('privacyContactInput').value || '[LINK]';
+            document.getElementById('privacyOutput').value = `Section 1 - What Do We Do With Your Information?\n\nIf you would like to: access, correct, amend or delete any personal information we have about you, register a complaint, or simply want more information you can fill out the form on our contact us page at ${c}.`;
+        }
+
+        function generateShipping() {
+            const b = document.getElementById('shippingBizName').value || '[Business Name]';
+            const c = document.getElementById('shippingContactInput').value || '[Contact Us Link]';
+            const type = document.getElementById('shippingPolicyType').value;
+            
+            if (type === 'short') {
+                document.getElementById('shippingOutput').value = `<div style="text-align: left;">\n<p>At <strong>${b}</strong>, we value your trust and aim to provide a smooth, transparent shopping experience.</p><br><br>\n<h2>Shipping Policy</h2><br>\n<p>Orders are processed within <strong>1–5 business days</strong> after payment confirmation.</p><br>\n<h2>Need Help?</h2><br>\n<p>If you have questions about your order, please reach out to us via our&nbsp;<a href="${c}">Contact Us</a> page.</p>\n</div>`;
+            } else {
+                document.getElementById('shippingOutput').value = `General Terms & Conditions\n\n${b} reserves the right to update the rules when necessary.`;
+            }
+        }
+    </script>
+</body>
+</html>

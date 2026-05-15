@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- This meta tag forces the browser to stay at 100% scale -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Internal Training Portal | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #1a73e8; --accent-purple: #8a2be2; --text-main: #1d1d1f; --text-sub: #5f6368; --doc-red: #ff3b30; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: linear-gradient(135deg, #e3edf7 0%, #f4eaff 100%); 
+            height: 100vh; /* Strictly 100% of the viewport height */
+            width: 100vw;
+            color: var(--text-main); 
+            overflow: hidden; /* Prevents scrollbars */
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes headshake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+        
+        .bg-orb { position: absolute; border-radius: 50%; filter: blur(100px); z-index: -10; animation: float 12s infinite alternate ease-in-out; }
+        .orb-1 { width: 50vw; height: 50vw; background: rgba(26, 115, 232, 0.15); top: -10%; left: -10%; }
+        .orb-2 { width: 45vw; height: 45vw; background: rgba(138, 43, 226, 0.1); bottom: -10%; right: -5%; animation-delay: -6s; }
+        @keyframes float { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(30px) scale(1.05); } }
+
+        /* Login section is now visible by default (display: flex) */
+        #login-section { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; z-index: 50; animation: fadeIn 0.5s ease;}
+        
+        .auth-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(40px); border-radius: 32px; padding: 45px; max-width: 420px; width: 90%; text-align: center; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 20px 60px rgba(0,0,0,0.05); }
+        .auth-card.error-shake { animation: headshake 0.4s ease-in-out; }
+        .restricted-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255, 59, 48, 0.08); border: 1.5px solid rgba(255, 59, 48, 0.2); color: var(--doc-red); padding: 8px 16px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; margin-left: auto; margin-right: auto;}
+        .auth-card h2 { font-size: 30px; font-weight: 800; letter-spacing: -1px; margin-bottom: 30px; color: var(--text-main); margin-top: 5px;}
+        
+        .input-group { position: relative; width: 100%; margin-bottom: 15px; }
+        .input-field { width: 100%; padding: 16px; border-radius: 16px; border: 1px solid #d2d2d7; background: rgba(255, 255, 255, 0.5); font-size: 15px; font-weight: 500; font-family: inherit; outline: none; transition: 0.3s; }
+        .input-field:focus { border-color: var(--primary); background: #ffffff; box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.12); }
+        .toggle-password { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-sub); display: flex; align-items: center; justify-content: center; padding: 4px; transition: 0.2s;}
+        .toggle-password:hover { color: var(--primary); }
+        .remember-row { display: flex; align-items: center; justify-content: flex-start; gap: 10px; margin: 15px 0 25px 5px; cursor: pointer; }
+        .remember-row input { width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
+        .remember-row label { font-size: 14px; font-weight: 600; color: var(--text-sub); cursor: pointer; user-select: none; }
+        .login-btn { background: var(--text-main); color: white; border: none; padding: 18px; width: 100%; border-radius: 16px; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; font-family: inherit; }
+        .login-btn:hover { background: #000; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .gradient-text { background: linear-gradient(135deg, var(--primary), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <div id="login-section">
+        <div class="auth-card" id="loginCard">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <div class="restricted-badge">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    RESTRICTED ACCESS
+                </div>
+                <h2 class="gradient-text">Welcome Back</h2>
+            </div>
+            
+            <form onsubmit="event.preventDefault(); handleAuth();">
+                <div class="input-group">
+                    <input type="text" id="emailInput" class="input-field" placeholder="Username">
+                </div>
+                <div class="input-group">
+                    <input type="password" id="passwordInput" class="input-field" style="padding-right: 55px;" placeholder="Password">
+                    <div class="toggle-password" onclick="togglePasswordVisibility()">
+                        <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="remember-row" onclick="document.getElementById('rememberMe').click();">
+                    <input type="checkbox" id="rememberMe" onclick="event.stopPropagation();">
+                    <label for="rememberMe">Remember me</label>
+                </div>
+
+                <button type="submit" class="login-btn">Enter Workspace</button>
+                <p id="msg" style="color:var(--doc-red); margin-top:15px; font-size:13px; font-weight:bold;"></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            if (localStorage.getItem('kb_logged_in') === 'true') {
+                window.location.href = 'dashboard.html';
+            }
+        };
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('passwordInput');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+            }
+        }
+
+        function triggerErrorShake() {
+            const loginCard = document.getElementById('loginCard');
+            loginCard.classList.remove('error-shake');
+            void loginCard.offsetWidth; 
+            loginCard.classList.add('error-shake');
+        }
+
+        function handleAuth() {
+            const email = document.getElementById('emailInput').value.trim().toLowerCase();
+            const pass = document.getElementById('passwordInput').value.trim();
+            const isRemembered = document.getElementById('rememberMe').checked;
+            const msg = document.getElementById('msg');
+            msg.innerText = '';
+
+            if (email === "admin@websupportctr.com" && pass === "knowledge2026") {
+                if (isRemembered) localStorage.setItem('kb_logged_in', 'true');
+                else sessionStorage.setItem('kb_session_active', 'true');
+                
+                document.getElementById('login-section').style.opacity = '0';
+                setTimeout(() => { window.location.href = 'dashboard.html'; }, 300);
+            } else {
+                triggerErrorShake();
+                msg.innerText = "Access Denied. Invalid credentials.";
+            }
+        }
+    </script>
+</body>
+</html>
